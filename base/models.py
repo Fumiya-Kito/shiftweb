@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    name = models.CharField(max_length=50, null=True, blank=True)
     section = models.CharField(max_length=50, null=True, blank=True)
     duty = models.CharField(max_length=50, null=True, blank=True)
     employment_status = models.CharField(max_length=50, null=True, blank=True)
@@ -31,6 +32,9 @@ class Shift(models.Model):
     remarks = models.TextField(null=True, blank=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
+    def __str__(self):
+        return str(self._id) + ': ' + str(self.user.first_name) + '/ ' + str(self.period_start) + '~' + str(self.period_end)
+
 class ShiftItem(models.Model):
     shift = models.ForeignKey(Shift, on_delete=models.CASCADE, null=True, blank=True)
     date = models.DateField(auto_now_add=False)
@@ -41,3 +45,5 @@ class ShiftItem(models.Model):
     end_time = models.TimeField(auto_now=False, blank=True, default=datetime.time(3,00))
     _id = models.AutoField(primary_key=True, editable=False)
     
+    def __str__(self):
+        return str(self.shift.user.first_name) + ': ' + str(self.date)

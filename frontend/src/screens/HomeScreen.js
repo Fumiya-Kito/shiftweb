@@ -13,9 +13,11 @@ function HomeScreen() {
         }
         fetchUsers()
 
+
         async function fetchProfile() { 
             const { data } = await axios.get('/api/users/profiles/') 
-            setProfiles(data) 
+            setProfiles(data)
+            console.log(data)
         }
         fetchProfile()
     }, [])
@@ -23,7 +25,7 @@ function HomeScreen() {
     return (
         <div>
             <h1>Profiles</h1>
-            <Table striped  hover responsive className='table-sm'>
+            <Table striped hover responsive className='table-sm'>
                 <thead>
                     <tr>
                         <th>ID</th>

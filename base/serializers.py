@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.tokens import RefreshToken
+
 from django.contrib.auth.models import User
 from .models import *
 
@@ -23,26 +25,23 @@ class UserSerializer(serializers.ModelSerializer):
             name = obj.email
         return name
 
-class ProfileSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField(read_only=True)
-    str_is_rookie = serializers.SerializerMethodField(read_only=True)
+class UserSerializerWithToken(UserSerializer):
+    token = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
+        model = User
+        fields = ['id', '_id', 'username', 'email', 'name', 'isAdmin', 'token']
+
+    def get_token(self, obj):
+        token = RefreshToken.for_user(obj)
+        return str(token.access_token)
+
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
         model = Profile
-        fields = [
-            'name', 'section', 'duty', 'employment_status', 'is_rookie', 'str_is_rookie',
-            'is_open_staff', 'is_pre_close_staff', 'is_close_staff',
-            'start_default', 'end_default', 'desired_times_per_week',
-            'desired_working_time', 'commute', 'station', '_id'
-        ]
-
-    def get_name(self, obj):
-        return obj.user.username
-
-    def get_str_is_rookie(self, obj):
-        if obj.is_rookie:
-            return '○'
-        return '☓'
+        fields = '__all__'
 
 class ShiftItemSerializer(serializers.ModelSerializer):
     class Meta:
