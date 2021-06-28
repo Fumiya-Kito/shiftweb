@@ -2,19 +2,23 @@ import React, { useState, useEffect } from 'react'
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 
-import { useLoginStore, useLoginDispatch, useProfileDispatch } from '../context'
+import { useLoginStore, useLoginDispatch, useProfileDispatch, useShiftDispatch, useShiftStore } from '../context'
 import { logout } from '../actions/userActions'
+import { SHIFT_RESET } from '../constants/shiftConstants'
 
 
 function Header() {
     const state = useLoginStore()
     const loginDispatch = useLoginDispatch()
     const { userInfo, loading } = state
-    // const profileDispatch = useProfileDispatch()
+    const shiftDispatch = useShiftDispatch()
+    const shiftState = useShiftStore()
+    const { isSubmitted } = shiftState
 
     const logoutHandler = () => {
         // logout(loginDispatch, profileDispatch)
         logout(loginDispatch)
+        shiftDispatch({type: SHIFT_RESET})
     }
 
     return (

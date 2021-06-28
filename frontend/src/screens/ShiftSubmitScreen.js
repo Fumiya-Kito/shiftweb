@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Row, Col, Card, Form, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { useLoginStore } from '../context'
+import { useLoginStore, useShiftStore, useProfileStore} from '../context'
 
 import { takeMonth } from '../constants/month'
 import { format } from 'date-fns'
 import  ShiftItemForm  from '../components/ShiftItemForm'
 
-import { useShiftStore } from '../context'
+import {  } from '../context'
 
-// import  useMediaQuery  from 'react-response'
+import { startOfMonth, endOfMonth, } from 'date-fns'
+
 
 
 function ShiftSubmitScreen({ history, match }) {
@@ -18,40 +19,72 @@ function ShiftSubmitScreen({ history, match }) {
     //global State
     const loginState = useLoginStore()
     const { userInfo } = loginState
+    const profileState = useProfileStore()
+    const { profile } = profileState
     const shiftState = useShiftStore()
-    const { shiftItems } = shiftState
+    const { shiftItems, period, isSubmitted } = shiftState
     
+    //local
+    const [shifts, setShifts] = useState([])
+
+
     //for Calender
     const days = ["日", "月", "火", "水", "木", "金", "土"]
     let month = []
-    month = takeMonth(new Date())()
+    month = takeMonth(period[0])()
 
     const getStringDate = (dt = new Date()) => {
         return dt.getFullYear() + '-' + ('0'+(dt.getMonth()+1)).slice(-2) + '-' + ('0'+dt.getDate()).slice(-2)
     }
 
+    const config = {
+        headers: {
+            'Content-type': 'application/json',
+            Authorization : `Bearer ${userInfo.token}`
+        }
+    }
+
     useEffect(() => {
         if (!userInfo) {
             history.push('/login')
-        } else {
-            const config = {
-                headers: {
-                    'Content-type': 'application/json',
-                    Authorization : `Bearer ${userInfo.token}`
-                }
-            }
-
+        } else if (isSubmitted) {
+            history.push('/profile')
+        }
+        else {
+            async function fetchShifts() { 
+                const { data } = await axios.get(
+                    `/api/shifts/myshifts/`,
+                    config
+                )
+                setShifts(data)
+                console.log('shifts: ', data)
+            }        
+            fetchShifts()
         }
     }, [userInfo, history, match])
-
-    const submitHandler = (e) => {
+    
+    const submitHandler = async(e) => {
         e.preventDefault()
         console.log(shiftItems)
+
+        const { data } = await axios.post(
+            `/api/shifts/shift/create/`,
+            {
+                'shiftItems': shiftItems,
+                'section': profile.section,
+                'periodStart': getStringDate(period[0]),
+                'periodEnd': getStringDate(period[1]),
+                'remarks': "",
+                'isSubmitted': true,
+            },
+            config
+        )
+        history.push('/profile')
     } 
 
     return (
         <div>
-            {/* {console.log(shiftItems)} */}
+            {console.log(shiftState)}
 
             <Link to='/profile' className='btn my-2' style={{ background: '#999999'}}>
                 ＜ Go Back to Profile

@@ -22,7 +22,8 @@ function App() {
   return (
     <Router>
       <LoginProvider>
-        <Header />
+        <ShiftProvider>
+          <Header />
         <main className='py-3'>
           <Container>
               <Route  path='/' component={HomeScreen} exact />
@@ -30,14 +31,15 @@ function App() {
               <Route path='/login' component={LoginScreen}/>
               <Route path='/shifts/confirm/:id' component={CardShift} />
             <ProfileProvider>
-              <ShiftProvider>
+              
                 <Route path='/profile' component={ProfileScreen}/>
                 <Route path='/shifts/test' component={ShiftItemForm}/>
                 <Route path='/shifts/submit' component={ShiftSubmitScreen} />
-              </ShiftProvider>
+              
             </ProfileProvider>
           </Container>
         </main>
+        </ShiftProvider>
       </LoginProvider>
     </Router>
   );

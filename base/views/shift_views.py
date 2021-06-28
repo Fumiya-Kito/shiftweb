@@ -72,7 +72,8 @@ def addShiftItems(request):
         section=data['section'],
         period_start=data['periodStart'],
         period_end=data['periodEnd'],
-        remarks=data['remarks']
+        remarks=data['remarks'],
+        is_submitted=data['isSubmitted']
     )
     #2. create shiftItems
     for i in shiftItems:
