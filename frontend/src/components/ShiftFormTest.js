@@ -8,82 +8,88 @@ import { useLoginStore, useProfileStore, useShiftDispatch, useShiftStore } from 
 
 import { TimePickerComponent } from '@syncfusion/ej2-react-calendars'
 import { addShiftItem, removeShiftItem, updateShiftItem } from '../actions/shiftActions'
-import { set } from 'date-fns'
+import { set, setISODay } from 'date-fns'
 
 
-function ShiftItemForm({history, date}) {
-    //States 引数にdate
+function ShiftFormTest({ history, match }) {
+
+    const shiftItemId = match.params.id
+    // const shiftItemId = shiftItem._id
+
+    //States    
+    const [ shiftItem, setShiftItem ] = useState('') 
+    const [ date, setDate ] = useState('') 
     const [ isWork, setIsWork ] = useState(false) 
     const [ isAllDay, setIsAllDay ] = useState(false) 
     const [ startTime, setStartTime ] = useState('')
     const [endTime, setEndTime] = useState('')
+    // const [ isWork, setIsWork ] = useState(shiftItem.isWork) 
+    // const [ isAllDay, setIsAllDay ] = useState(shiftItem.isAllDay) 
+    // const [ startTime, setStartTime ] = useState(shiftItem.startTime)
+    // const [ endTime, setEndTime] = useState(shiftItem.endTime)
 
     
     //Global States
     const loginState = useLoginStore()
     const { userInfo, loading, error } = loginState
-    const profileState = useProfileStore()
-    const { profile, profileLoading, profileError } = profileState
-    const shiftState = useShiftStore()
-    const { shiftItems } = shiftState
-    const shiftDispatch = useShiftDispatch()
     
     //checkbox
     const radios = [
         { name:'終日', value:true},
         { name:'時間指定', value:false}
     ]
+
+    
     
     useEffect(() => {
-
-        if (isAllDay) {
-            setStartTime('07:00')
-            setEndTime('23:30')
-        } else if(!startTime && !endTime) {
-            setStartTime(profile.start_default.substring(0,5))
-            setEndTime(profile.end_default.substring(0,5))
-        }
-
-        if (date && !isWork) {
-            removeShiftItem(shiftDispatch, date)
-            console.log('remove item')
+        if (!userInfo) {
+            history.push('/login')
+        } else {
+            const config = {
+                headers: {
+                    'Content-type': 'application/json',
+                    Authorization : `Bearer ${userInfo.token}`
+                }
+            }
+            if (!shiftItem) {
+                async function fetchShiftItem() { 
+                    const { data } = await axios.get(
+                        `/api/shifts/shiftItem/confirm/${shiftItemId}`,
+                        config
+                    )
+                    setShiftItem(data)
+                }        
+                fetchShiftItem()
+            } else if (isAllDay) {
+                setStartTime('07:00')
+                setEndTime('23:30')
+            }
+            else {
+                setDate(shiftItem.date)
+                setStartTime(String(shiftItem.start_time).substring(0,5))
+                setEndTime(String(shiftItem.end_time).substring(0,5))
+                setIsWork(shiftItem.is_work)
+                setIsAllDay(shiftItem.is_all_day)
+            }
         }
         
-        if (isWork && date&& startTime && endTime) {
-            addShiftItem(shiftDispatch, date, isWork, startTime, endTime, isAllDay)
-            console.log('success for dispatch')
-        }
-        
-        
-    }, [history, isAllDay, isWork, date, startTime, endTime])
+    }, [history, userInfo, isAllDay, shiftItem])
     
-    // const submitHandler = (e) => {
-    //     e.preventDefault()
-    
-    //     const config = {
-    //         headers: {
-    //             'Content-type': 'application/json',
-    //             Authorization : `Bearer ${userInfo.token}`
-    //         }
-    //     }
-    //     async function postShiftItem() { 
-    //         const { data } = await axios.post(
-    //             `/api/shifts/shiftItem/create/`,
-    //             {'date': date, 'isWork': isWork, 'isAllDay': isAllDay, 'startTime': startTime, 'endTime': endTime},
-    //             config
-    //         )
-    //     }
-    //     postShiftItem()
-    // }
+    const submitHandler = (e) => {
+        e.preventDefault()
+    }
 
         return (
             
             <>
+                {console.log(shiftItem)}
+                {console.log(isWork)}
+                {console.log(startTime)}
                 {loading && <Loader />}
 
                 <Container>
                     <Form.Group >
-                        {/* <Form.Label className={'m-0'}>日付</Form.Label>
+                        <Form.Label className={'m-0'}>日付</Form.Label>
                         <Form.Control
                             type='date'
                             value={date}
@@ -92,7 +98,7 @@ function ShiftItemForm({history, date}) {
                             required
                             // style={{display: 'none'}}
                         >
-                        </Form.Control> */}
+                        </Form.Control>
 
                         <Form.Label className={'m-0'}>出欠</Form.Label>
                         <Form.Control
@@ -165,4 +171,4 @@ function ShiftItemForm({history, date}) {
     )
 }
 
-export default ShiftItemForm
+export default ShiftFormTest
