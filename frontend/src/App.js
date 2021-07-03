@@ -13,9 +13,11 @@ import { ProfileProvider } from './context'
 import { ShiftProvider } from './context'
 
 
-import CardShift from './screens/CardShift'
-import ShiftItemForm from './components/ShiftItemForm';
-import ShiftSubmitScreen from './screens/ShiftSubmitScreen';
+import ShiftConfirmScreen from './screens/ShiftConfirmScreen'
+import ShiftItemForm from './components/ShiftItemForm'
+import ShiftUpdateScreen from './screens/ShiftUpdateScreen'
+import ShiftSubmitScreen from './screens/ShiftSubmitScreen'
+import ShiftItemUpdateForm from './components/ShiftItemUpdateForm'
 
 
 function App() {
@@ -29,11 +31,13 @@ function App() {
               <Route  path='/' component={HomeScreen} exact />
               <Route path='/register' component={RegisterScreen} />
               <Route path='/login' component={LoginScreen}/>
-              <Route path='/shifts/confirm/:id' component={CardShift} />
+              <Route path='/shifts/confirm/:id' component={ShiftConfirmScreen} />
             <ProfileProvider>
               
                 <Route path='/profile' component={ProfileScreen}/>
                 <Route path='/shifts/test' component={ShiftItemForm}/>
+                <Route path='/update/test/:id' component={ShiftItemUpdateForm}/>
+                <Route path='/shifts/update/:id' component={ShiftUpdateScreen}/>
                 <Route path='/shifts/submit' component={ShiftSubmitScreen} />
               
             </ProfileProvider>

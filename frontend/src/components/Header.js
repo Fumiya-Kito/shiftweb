@@ -25,7 +25,7 @@ function Header() {
         <header>
             <Navbar bg='dark' variant='dark' collapseOnSelect>
                 <Container>
-                    <Navbar.Brand>Header</Navbar.Brand>
+                    <Navbar.Brand>Shift Web</Navbar.Brand>
                     {/* <Navbar.Toggle aria-controls="basic-navbar-nav" />  */}
                         <Nav className='mr-auto p-1'>
 

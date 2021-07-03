@@ -10,7 +10,7 @@ import {format} from 'date-fns'
 // import  useMediaQuery  from 'react-response'
 
 
-function ShiftMyListScreen({ history, match }) {
+function ShiftConfirmScreen({ history, match }) {
     
     //for API
     const shiftId = match.params.id
@@ -21,12 +21,8 @@ function ShiftMyListScreen({ history, match }) {
     
     //for Calender
     const days = ["日", "月", "火", "水", "木", "金", "土"]
-    let month = []
-
-
-    if (shift) {
-        month = takeMonth(new Date(String(shift.period_start)))()
-    }
+    const month = takeMonth(new Date(String(shift.period_start)))()
+    
 
     useEffect(() => {
         if (!userInfo) {
@@ -51,27 +47,21 @@ function ShiftMyListScreen({ history, match }) {
 
     return (
         <div>
+            {console.log(shift)}
             <Link to='/profile' className='btn my-2' style={{ background: '#999999'}}>
-                ＜ Go Back to Profile
+                ＜ 戻る
             </Link>
-            <h1 className='p-4'>My Shift</h1>
+            <h1 className='p-4'>シフト確認</h1>
             {shift.shiftItems &&
             <div className='text-center'> 
                 <h4 style={{borderBottom:'1px solid', display:'inline-block'}}>{ month[0][6].getFullYear()}/{month[0][6].getMonth() + 1}</h4>
-                <Row style={{ background: '#c0c0c0', display:'none'}} >
-
-                    {days.map((day) => (
-                        <Col key={day} style={{ border: 'solid 1px', margin: '0 0 0 -1px' }}>
-                            <div className='p-2'>{day}</div>
-                        </Col>
-                    ))}
-                </Row>
                 
                 <div>
-                    {month.map((week) => (
-                        <Row key={week} className='text-center my-4' >
+                    <Row className='text-center my-4' >
+                        {month.map((week) => (
+                            <React.Fragment key={week}>
                             {week.map((x) => (
-                                <Col key={x} className='g-2 my-1' >
+                                <Col key={x} className='my-1' xs={6} sm={6} md={4} lg={3} xl={2}>
                                     
                                     <Card style={{width: '11rem', height:'10rem'}}>
                                         <Card.Header>
@@ -96,8 +86,9 @@ function ShiftMyListScreen({ history, match }) {
                                     </Card>
                                 </Col>
                             ))}
-                        </Row>
+                        </React.Fragment>
                     ))}
+                    </Row>
                 </div>
             </div>
             }
@@ -105,4 +96,4 @@ function ShiftMyListScreen({ history, match }) {
     )
 }
 
-export default ShiftMyListScreen
+export default ShiftConfirmScreen

@@ -14,7 +14,7 @@ import { startOfMonth, endOfMonth, } from 'date-fns'
 
 
 
-function ShiftSubmitScreen({ history, match }) {
+function ShiftSubmitScreen({ history }) {
     
     //global State
     const loginState = useLoginStore()
@@ -23,73 +23,58 @@ function ShiftSubmitScreen({ history, match }) {
     const { profile } = profileState
     const shiftState = useShiftStore()
     const { shiftItems, period, isSubmitted } = shiftState
-    
-    //local
-    const [shifts, setShifts] = useState([])
 
 
     //for Calender
     const days = ["日", "月", "火", "水", "木", "金", "土"]
-    let month = []
-    month = takeMonth(period[0])()
+    const month = takeMonth(period[0])()
 
     const getStringDate = (dt = new Date()) => {
         return dt.getFullYear() + '-' + ('0'+(dt.getMonth()+1)).slice(-2) + '-' + ('0'+dt.getDate()).slice(-2)
     }
 
-    const config = {
-        headers: {
-            'Content-type': 'application/json',
-            Authorization : `Bearer ${userInfo.token}`
-        }
-    }
-
+    
     useEffect(() => {
         if (!userInfo) {
             history.push('/login')
         } else if (isSubmitted) {
             history.push('/profile')
         }
-        else {
-            async function fetchShifts() { 
-                const { data } = await axios.get(
-                    `/api/shifts/myshifts/`,
-                    config
-                )
-                setShifts(data)
-                console.log('shifts: ', data)
-            }        
-            fetchShifts()
-        }
-    }, [userInfo, history, match])
+
+    }, [userInfo, history])
     
     const submitHandler = async(e) => {
         e.preventDefault()
-        console.log(shiftItems)
-
-        const { data } = await axios.post(
-            `/api/shifts/shift/create/`,
-            {
-                'shiftItems': shiftItems,
-                'section': profile.section,
-                'periodStart': getStringDate(period[0]),
-                'periodEnd': getStringDate(period[1]),
-                'remarks': "",
-                'isSubmitted': true,
-            },
-            config
-        )
-        history.push('/profile')
+        if (window.confirm('シフトを提出しますか?（提出期限後、MGRが受理するまでは更新可能です）')) {
+            const config = {
+                headers: {
+                    'Content-type': 'application/json',
+                    Authorization : `Bearer ${userInfo.token}`
+                }
+            }
+    
+            const { data } = await axios.post(
+                `/api/shifts/shift/create/`,
+                {
+                    'shiftItems': shiftItems,
+                    'section': profile.section,
+                    'periodStart': getStringDate(period[0]),
+                    'periodEnd': getStringDate(period[1]),
+                    'remarks': "",
+                    'isSubmitted': true,
+                },
+                config
+            )
+            history.push('/profile')
+        }
     } 
 
     return (
         <div>
-            {console.log(shiftState)}
-
             <Link to='/profile' className='btn my-2' style={{ background: '#999999'}}>
-                ＜ Go Back to Profile
+                ＜ 戻る
             </Link>
-            <h1 className='p-4'>Shift Submit</h1>
+            <h1 className='p-4'>新規シフト提出</h1>
             
             <div className='text-center'> 
                 <h4 style={{ borderBottom: '1px solid', display: 'inline-block' }}>
@@ -99,10 +84,10 @@ function ShiftSubmitScreen({ history, match }) {
                 <Form onSubmit={submitHandler}>
                     
                     <Row className='my-5 border' >
-                        {month.map((week) => (
-                            <React.Fragment key={week}> 
-                                {week.map((date) => (
-                                    <React.Fragment key={date}>
+                        {month.map((week, i) => (
+                            <React.Fragment key={i}> 
+                                {week.map((date, j) => (
+                                    <React.Fragment key={j}>
                                         {date.getMonth() === month[0][6].getMonth() &&
                                             <Col className='my-1' xs={6} sm={6} md={4} lg={3} xl={2}>                                            
                                                 <Card  className='mx-auto my-2'>
@@ -110,7 +95,7 @@ function ShiftSubmitScreen({ history, match }) {
                                                         {date.getMonth() + 1} / {date.getDate()} ({ days[date.getDay()]})
                                                     </Card.Header>
                                                     <Card.Body >    
-                                                    <ShiftItemForm date={getStringDate(date)}/>
+                                                        <ShiftItemForm date={getStringDate(date)}/>
                                                     </Card.Body>
                                                 </Card>
                                             </Col>

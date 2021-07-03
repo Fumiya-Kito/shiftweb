@@ -51,8 +51,24 @@ def getShiftById(request, pk):
             serializer = ShiftSerializer(shift, many=False)
             return Response(serializer.data)
         else:
-            Response({'detail': 'Not authorized to view this order'},
+            Response({'detail': 'Not authorized to view this shift'},
                      status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response({'detail': 'Shift does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getShiftItemById(request, pk):
+    user = request.user
+
+    try:
+        shiftItem = ShiftItem.objects.get(_id=pk)
+        if user.is_staff or shift.user == user:
+            serializer = ShiftItemSerializer(shiftItem, many=False)
+            return Response(serializer.data)
+        else:
+            Response({'detail': 'Not authorized to view this shiftItem'},
+                status=status.HTTP_400_BAD_REQUEST)
     except:
         return Response({'detail': 'Shift does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -73,7 +89,6 @@ def addShiftItems(request):
         period_start=data['periodStart'],
         period_end=data['periodEnd'],
         remarks=data['remarks'],
-        is_submitted=data['isSubmitted']
     )
     #2. create shiftItems
     for i in shiftItems:
@@ -89,23 +104,63 @@ def addShiftItems(request):
     serializer= ShiftSerializer(shift, many=False)
     return Response(serializer.data)
 
-# check用
-@api_view(['POST'])
+
+
+@api_view(['PUT'])
 @permission_classes([IsAuthenticated])
-def createShiftItem(request):
-    user = request.user
+def updateShiftItem(request, pk):
+    data= request.data
+    shiftItem = ShiftItem.objects.get(_id=pk)
+
+    if shiftItem.is_work != data['isWork']:
+        shiftItem.delete()
+    else:
+        shiftItem.is_all_day = data['isAllDay']
+        shiftItem.start_time = data['startTime']
+        shiftItem.end_time = data['endTime']
+        shiftItem.save()
+
+    return Response('updated!')
+
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateShiftItems(request, pk):
     data = request.data
+    shift = Shift.objects.get(_id=pk)
+    
+    shiftItems = shift.shiftitem_set.all()
+    requestedShiftItems = data['shiftItems']
 
-    # create shiftItems
-    item = ShiftItem.objects.create(
-        #仮置 (hardCode)
-        shift=Shift.objects.get(_id=2),
-        date=data['date'],
-        is_work=data['isWork'],
-        is_all_day=data['isAllDay'],
-        start_time=data['startTime'],
-        end_time=data['endTime']
-    )
+    for before in shiftItems:
+        isUpdated = False
+        for after in requestedShiftItems[:]:
+            if before.date == after['date']:
+                #update
+                before.is_all_day = after['isAllDay'] 
+                before.start_time = after['StartTime'] 
+                before.end_time = after['EndTime']
+                isUpdated = True
+                requestedShiftItems.remove(after)
+                break
+        if not isUpdated:
+            #delete
+            before.delete()
 
-    return Response('shiftItem created!')
+    for remain in requestedShiftItems:
+        #create
+        ShiftItem.objects.create(
+            shift=shift,
+            date=remain['date'],
+            is_work=remain['isWork'],
+            is_all_day=remain['isAllDay'],
+            start_time=remain['startTime'],
+            end_time=remain['endTime'],
+        )
+
+    shift.remarks=data['remarks']
+    shift.save()
+
+    return Response('Update shiftItems')
 

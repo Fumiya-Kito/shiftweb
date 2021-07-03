@@ -30,7 +30,7 @@ class Shift(models.Model):
     period_start = models.DateField(auto_now_add=False)
     period_end = models.DateField(auto_now_add=False)
     remarks = models.TextField(null=True, blank=True)
-    is_submitted = models.BooleanField(default=False)
+    # is_submitted = models.BooleanField(default=False)
     is_confirmed = models.BooleanField(default=False)
     _id = models.AutoField(primary_key=True, editable=False)
 
@@ -48,4 +48,4 @@ class ShiftItem(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
     
     def __str__(self):
-        return str(self.shift.user.first_name) + ': ' + str(self.date)
+        return str(self._id) + str(self.shift.user.first_name) + ': ' + str(self.date)

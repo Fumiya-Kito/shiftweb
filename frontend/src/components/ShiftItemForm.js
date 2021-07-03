@@ -8,7 +8,6 @@ import { useLoginStore, useProfileStore, useShiftDispatch, useShiftStore } from 
 
 import { TimePickerComponent } from '@syncfusion/ej2-react-calendars'
 import { addShiftItem, removeShiftItem, updateShiftItem } from '../actions/shiftActions'
-import { set } from 'date-fns'
 
 
 function ShiftItemForm({history, date}) {
@@ -20,12 +19,9 @@ function ShiftItemForm({history, date}) {
 
     
     //Global States
-    const loginState = useLoginStore()
-    const { userInfo, loading, error } = loginState
     const profileState = useProfileStore()
-    const { profile, profileLoading, profileError } = profileState
+    const { profile } = profileState
     const shiftState = useShiftStore()
-    const { shiftItems } = shiftState
     const shiftDispatch = useShiftDispatch()
     
     //checkbox
@@ -33,6 +29,15 @@ function ShiftItemForm({history, date}) {
         { name:'終日', value:true},
         { name:'時間指定', value:false}
     ]
+
+    const changeColor = (flag) => {
+        if (flag) return 'dodgerblue'
+        return ''
+    }
+    const chooseCursor = (flag) => {
+        if (flag) return 'pointer'
+        return 'not-allowed'
+    }
     
     useEffect(() => {
 
@@ -53,7 +58,6 @@ function ShiftItemForm({history, date}) {
             addShiftItem(shiftDispatch, date, isWork, startTime, endTime, isAllDay)
             console.log('success for dispatch')
         }
-        
         
     }, [history, isAllDay, isWork, date, startTime, endTime])
     
@@ -79,19 +83,18 @@ function ShiftItemForm({history, date}) {
         return (
             
             <>
-                {loading && <Loader />}
 
-                <Container>
+                <Container style={{color: changeColor(isWork)}}>
                     <Form.Group >
                         {/* <Form.Label className={'m-0'}>日付</Form.Label>
                         <Form.Control
-                            type='date'
-                            value={date}
-                            onChange={(e) => setDate(e.target.value)}
-                            className={'mb-3'}
+                        type='date'
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                        className={'mb-3'}
                             required
                             // style={{display: 'none'}}
-                        >
+                            >
                         </Form.Control> */}
 
                         <Form.Label className={'m-0'}>出欠</Form.Label>
@@ -100,10 +103,6 @@ function ShiftItemForm({history, date}) {
                             value={isWork}
                             onChange={(e) => {
                                 setIsWork(!isWork)
-                                // if (e.target.value) {
-                                //     removeShiftItem(shiftDispatch, date)
-                                //     console.log('remove item')
-                                // }
                             }}
                             className={'mb-3'}
                             style={{cursor: 'pointer'}}
@@ -112,9 +111,8 @@ function ShiftItemForm({history, date}) {
                             <option value={true}>○</option>
                         </Form.Control>
 
-                        {isWork &&
+                        {!startTime && !endTime ? <Loader /> :
                             <div>
-
                                 <Form.Label className={'mb-0'}>開始時間</Form.Label>
                                 <TimePickerComponent
                                     placeholder='開始時間を選択'
@@ -123,12 +121,12 @@ function ShiftItemForm({history, date}) {
                                     format="HH:mm"
                                     step={30}
                                     change={(e) => setStartTime(e.text)}
-                                    enabled={!isAllDay}
+                                    enabled={!isAllDay && isWork}
                                     openOnFocus={!isAllDay}
                                     strictMode={true}
                                     showClearButton={false}
                                     allowEdit={false}
-                                    style={{cursor: 'pointer'}}
+                                    style={{cursor: chooseCursor(isWork)}}
                                 ></TimePickerComponent>
             
                                 <Form.Label className={'mt-3 mb-0'}>終了時間</Form.Label>
@@ -139,26 +137,26 @@ function ShiftItemForm({history, date}) {
                                     format="HH:mm"
                                     step={30}
                                     change={(e) => setEndTime(e.text)}
-                                    enabled={!isAllDay}
+                                    enabled={!isAllDay && isWork}
                                     openOnFocus={!isAllDay}
                                     strictMode={true}
                                     showClearButton={false}
                                     allowEdit={false}
-                                    style={{cursor: 'pointer'}}
+                                    style={{cursor: chooseCursor(isWork)}}
                                 ></TimePickerComponent>
                                     
                                 <Form.Group className="my-3" controlId="formBasicCheckbox">
                                     <Form.Check
+                                        disabled={!isWork}
                                         type="checkbox"
                                         label="終日"
                                         onChange={() => setIsAllDay(!isAllDay)}
                                         className='text-left'
                                     />
                                 </Form.Group>
-                                
-                                
                             </div>
                         }
+
                     </Form.Group>
                 </Container>
             </>

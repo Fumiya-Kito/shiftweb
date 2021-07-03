@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useReducer } from 'react'
-import { Form, Button, Row, Col, Table, Card, ListGroup } from 'react-bootstrap'
+import { Button, Row, Col, Table, Container } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import axios from 'axios'
 import { useLoginStore, useProfileDispatch, useProfileStore, useShiftDispatch, useShiftStore} from '../context'
@@ -68,55 +68,29 @@ function ProfileScreen({ history }) {
 
     return (
         <div>
-            <h1>ようこそ! {profile.name} さん</h1>
+            {console.log(shifts)}
+            <h1>ようこそ {profile.name} さん</h1>
             <Row className='py-3'>
-                <Col md={4} className='py-2'>
-                    <h2>My Profile</h2>
-                    <ListGroup >
-                        <ListGroup.Item>
-                            ID: {profile._id}
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            Name: {profile.name}
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            Duty: {profile.duty}
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            Section: {profile.section} 
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            Employment: {profile.employment_status}
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            Rokie?: {String(profile.is_rookie)}
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            Commute: {profile.commute} 
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            Default-Start: {profile.start_default}
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            Default-End: {profile.end_default}
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            Default-Work: {profile.desired_times_per_week} times
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            Default-Time: {profile.desired_working_time} hours
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            Station: {profile.station}
-                        </ListGroup.Item>
-                    </ListGroup>
-                </Col>
+                
 
                 {loading ? <Loader />
                     :
-                    <Col md={8} className='py-2'>
-                        <h4>My Shifts</h4>
-                        <Table striped hover responsive className='table-sm'>
+                    <Col md={5} sm={12} className='py-2'>
+                        <h4>シフト提出</h4>
+                        <Container className='border'>
+                            <LinkContainer to='/shifts/submit' className='d-grid gap-2 my-3 p-1'>
+                                <Button size='lg' varinat='primary' disabled={isSubmitted || (new Date() > deadline)}>今月分はこちらから <p className='m-0'>{getStringDate(period[0])} ~ { getStringDate(period[1])}</p></Button>
+                            </LinkContainer>
+                            <p className='my-0 py-0'>提出状態： {isSubmitted ?　<i style={{color: 'blue'}}>提出済み</i> : <i style={{color: 'red'}}>未提出</i>}</p>
+                            <p className='my-0 py-0'>提出期限： {String(format(deadline, "yyyy-MM-dd' 'HH:mm"))} まで</p>
+                            {(!isSubmitted && (new Date() > deadline)) &&
+                                <Message variant='danger'>期限内に提出できていません → 担当マネージャーに連絡！</Message>
+                            }
+                        </Container>
+
+                        
+                        <h4 className='mt-5'>シフト管理</h4>
+                        <Table striped hover responsive className='table-sm border' >
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -132,30 +106,102 @@ function ProfileScreen({ history }) {
                                         <td>{shift.period_start} {' '} ~ {' '}{shift.period_end}</td>
                                         <td>{shift.is_confirmed ? '確定' : '未確定'}</td>
                                         <td>
-                                            <LinkContainer to={`/shifts/confirm/${shift._id}`}>
-                                                { shift.is_confirmed ? 
-                                                    <Button className='btn-sm' variant='primary'>Details</Button>
-                                                    :<Button className='btn-sm' variant='info'>Update</Button>
-                                                }
-                                            </LinkContainer>
+                                            { shift.is_confirmed ? 
+                                                <LinkContainer to={`/shifts/confirm/${shift._id}`}>
+                                                    <Button className='btn-sm' variant='primary'>詳細</Button>
+                                                </LinkContainer> 
+                                                :
+                                                <LinkContainer to={`/shifts/update/${shift._id}`}>
+                                                    <Button className='btn-sm' variant='info'>更新</Button>
+                                                </LinkContainer> 
+                                            }
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
-                        </Table>
+                        </Table>          
                         
-                        <h2>Shift Submit</h2>
-                        
-                        <LinkContainer to='/shifts/submit' className='d-grid gap-2 my-2 p-3'>
-                            <Button size='lg' varinat='primary' disabled={isSubmitted || (new Date() > deadline)}>シフト提出： {getStringDate(period[0])} ~ { getStringDate(period[1])}</Button>
-                        </LinkContainer>
-                        <p>提出状態： {isSubmitted ?　<i style={{color: 'blue'}}>提出済み</i> : <i style={{color: 'red'}}>未提出</i>}</p>
-                        <p>提出期限： {String(format(deadline, "yyyy-MM-dd' 'HH:mm"))} まで</p>
-                        {(!isSubmitted && (new Date() > deadline)) &&
-                            <Message variant='danger'>期限内に提出できていません → 担当マネージャーに連絡！</Message>
-                        }
                     </Col>
                 }
+
+                <Col md={7} sm={12} className='py-2'>
+                    <h4>プロフィール</h4>
+
+                    <Table striped hover responsive className='table-sm border'>
+                            <thead>
+                                <tr>
+                                    <th>Key</th>
+                                    <th>Value</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ID</td>
+                                    <td>{profile._id}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>名前</td>
+                                    <td>{profile.name}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>職務</td>
+                                    <td>{profile.duty}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>セクション</td>
+                                    <td>{profile.section}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>雇用形態</td>
+                                    <td>{profile.employment_status}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>研修中</td>
+                                    <td>{String(profile.is_rookie)}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td> 業務開始時間</td>
+                                    <td> {profile.start_default}</td>
+                                    <td>シフト提出時に自動入力される値になります</td>
+                                </tr>
+                                <tr>
+                                    <td> 業務終了時間</td>
+                                    <td> {profile.end_default}</td>
+                                    <td>シフト提出時に自動入力される値になります</td>
+                                </tr>
+                                <tr>
+                                    <td> 週間希望シフト回数</td>
+                                    <td> 週{profile.desired_times_per_week}回</td>
+                                    <td>シフト作成の参考にします</td>
+                                </tr>
+                                <tr>
+                                    <td> 希望就労時間</td>
+                                    <td> {profile.desired_working_time}時間/回</td>
+                                    <td>シフト作成の参考にします</td>
+                                </tr>
+                                <tr>
+                                    <td> 通勤方法</td>
+                                    <td> {profile.commute}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td> 最寄り駅</td>
+                                    <td> {profile.station}</td>
+                                    <td> 当社最寄り駅までの最短経路が交通費支給額となります</td>
+                                </tr>
+                            
+                            </tbody>
+                        </Table>
+                    
+                </Col>
+
             </Row>
         </div>
     )
