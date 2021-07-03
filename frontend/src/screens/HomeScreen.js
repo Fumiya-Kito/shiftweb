@@ -17,7 +17,6 @@ function HomeScreen() {
         async function fetchProfile() { 
             const { data } = await axios.get('/api/users/profiles/') 
             setProfiles(data)
-            console.log(data)
         }
         fetchProfile()
     }, [])

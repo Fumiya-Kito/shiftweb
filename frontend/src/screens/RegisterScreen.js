@@ -37,8 +37,6 @@ function RegisterScreen({history}) {
                 '/api/users/register/',
                 { 'name': name, 'email': email, 'password': password },
             )
-            // register(name, email, password, registerDispatch)
-            console.log('register!')
             login(email, password, loginDispatch)
         }
     }

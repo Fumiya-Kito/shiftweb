@@ -50,35 +50,15 @@ function ShiftItemForm({history, date}) {
         }
 
         if (date && !isWork) {
-            removeShiftItem(shiftDispatch, date)
-            console.log('remove item')
+            removeShiftItem(shiftDispatch, date)  
         }
         
         if (isWork && date&& startTime && endTime) {
             addShiftItem(shiftDispatch, date, isWork, startTime, endTime, isAllDay)
-            console.log('success for dispatch')
         }
         
     }, [history, isAllDay, isWork, date, startTime, endTime])
-    
-    // const submitHandler = (e) => {
-    //     e.preventDefault()
-    
-    //     const config = {
-    //         headers: {
-    //             'Content-type': 'application/json',
-    //             Authorization : `Bearer ${userInfo.token}`
-    //         }
-    //     }
-    //     async function postShiftItem() { 
-    //         const { data } = await axios.post(
-    //             `/api/shifts/shiftItem/create/`,
-    //             {'date': date, 'isWork': isWork, 'isAllDay': isAllDay, 'startTime': startTime, 'endTime': endTime},
-    //             config
-    //         )
-    //     }
-    //     postShiftItem()
-    // }
+
 
         return (
             
