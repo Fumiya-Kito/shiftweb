@@ -8,15 +8,16 @@ import HomeScreen from './screens/HomeScreen'
 import RegisterScreen from './screens/RegisterScreen'
 import LoginScreen from './screens/LoginScreen'
 import ProfileScreen from './screens/ProfileScreen'
+import ProfileUpdateScreen from './screens/ProfileUpdateScreen'
 import { LoginProvider } from './context'
 import { ProfileProvider } from './context'
 import { ShiftProvider } from './context'
 
 
 import ShiftConfirmScreen from './screens/ShiftConfirmScreen'
-import ShiftItemForm from './components/ShiftItemForm'
 import ShiftUpdateScreen from './screens/ShiftUpdateScreen'
 import ShiftSubmitScreen from './screens/ShiftSubmitScreen'
+import ShiftItemForm from './components/ShiftItemForm'
 import ShiftItemUpdateForm from './components/ShiftItemUpdateForm'
 
 
@@ -34,7 +35,8 @@ function App() {
               <Route path='/shifts/confirm/:id' component={ShiftConfirmScreen} />
             <ProfileProvider>
               
-                <Route path='/profile' component={ProfileScreen}/>
+                <Route path='/profile' component={ProfileScreen} />
+                <Route path='/update/profile' component={ProfileUpdateScreen}/>
                 <Route path='/shifts/test' component={ShiftItemForm}/>
                 <Route path='/update/test/:id' component={ShiftItemUpdateForm}/>
                 <Route path='/shifts/update/:id' component={ShiftUpdateScreen}/>

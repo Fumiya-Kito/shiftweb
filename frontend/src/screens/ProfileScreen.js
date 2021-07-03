@@ -125,7 +125,16 @@ function ProfileScreen({ history }) {
                 }
 
                 <Col md={7} sm={12} className='py-2'>
-                    <h4>プロフィール</h4>
+                    <Row>
+                        <Col md ={10} sm={10} xs={10}>
+                            <h4>プロフィール</h4>
+                        </Col>
+                        <Col md={2} sm={2} xs={2} className='m-0 px-0 pb-2 text-center'>
+                            <LinkContainer to={'/update/profile'}>
+                                    <Button className='btn-sm'>編集</Button>
+                            </LinkContainer>
+                        </Col>
+                    </Row>
 
                     <Table striped hover responsive className='table-sm border'>
                             <thead>
@@ -168,12 +177,12 @@ function ProfileScreen({ history }) {
                                 </tr>
                                 <tr>
                                     <td> 業務開始時間</td>
-                                    <td> {profile.start_default}</td>
+                                    <td> {profile.start_default.substring(0,5)}</td>
                                     <td>シフト提出時に自動入力される値になります</td>
                                 </tr>
                                 <tr>
                                     <td> 業務終了時間</td>
-                                    <td> {profile.end_default}</td>
+                                    <td> {profile.end_default.substring(0,5)}</td>
                                     <td>シフト提出時に自動入力される値になります</td>
                                 </tr>
                                 <tr>

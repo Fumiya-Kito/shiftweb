@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import FormContainer from './FormContainer'
-import { Form, ButtonGroup, ToggleButton, Container } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Form, Container } from 'react-bootstrap'
 import  Loader from './Loader'
-import { useLoginStore, useProfileStore, useShiftDispatch, useShiftStore } from '../context'
+import { useProfileStore, useShiftDispatch, useShiftStore } from '../context'
 
 import { TimePickerComponent } from '@syncfusion/ej2-react-calendars'
 import { addShiftItem, removeShiftItem, updateShiftItem } from '../actions/shiftActions'
