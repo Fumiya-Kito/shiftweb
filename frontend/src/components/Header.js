@@ -5,20 +5,21 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { useLoginStore, useLoginDispatch, useProfileDispatch, useShiftDispatch, useShiftStore } from '../context'
 import { logout } from '../actions/userActions'
 import { SHIFT_RESET } from '../constants/shiftConstants'
+import { USER_PROFILE_RESET } from '../constants/userConstants'
 
 
 function Header() {
     const state = useLoginStore()
     const loginDispatch = useLoginDispatch()
-    const { userInfo, loading } = state
+    const { userInfo } = state
     const shiftDispatch = useShiftDispatch()
-    const shiftState = useShiftStore()
-    const { isSubmitted } = shiftState
+    const profileDispatch = useProfileDispatch()
+    
 
     const logoutHandler = () => {
-        // logout(loginDispatch, profileDispatch)
         logout(loginDispatch)
         shiftDispatch({type: SHIFT_RESET})
+        profileDispatch({type: USER_PROFILE_RESET})
     }
 
     return (
@@ -26,7 +27,6 @@ function Header() {
             <Navbar bg='dark' variant='dark' collapseOnSelect>
                 <Container>
                     <Navbar.Brand>Shift Web</Navbar.Brand>
-                    {/* <Navbar.Toggle aria-controls="basic-navbar-nav" />  */}
                         <Nav className='mr-auto p-1'>
 
                             <LinkContainer to='/'>

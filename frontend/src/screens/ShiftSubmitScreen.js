@@ -24,6 +24,8 @@ function ShiftSubmitScreen({ history }) {
     const shiftState = useShiftStore()
     const { shiftItems, period, isSubmitted } = shiftState
 
+    //Local States
+    const [remarks, setRemarks] = useState('')
 
     //for Calender
     const days = ["日", "月", "火", "水", "木", "金", "土"]
@@ -60,7 +62,7 @@ function ShiftSubmitScreen({ history }) {
                     'section': profile.section,
                     'periodStart': getStringDate(period[0]),
                     'periodEnd': getStringDate(period[1]),
-                    'remarks': "",
+                    'remarks': remarks,
                     'isSubmitted': true,
                 },
                 config
@@ -106,9 +108,26 @@ function ShiftSubmitScreen({ history }) {
                         ))}
                     </Row>
 
-                    <Button type='submit' variant='primary'>
-                        送信
-                    </Button>
+                    <Row className='p-3 mb-5'>
+                            <Col md={8} >
+                                <Form.Group controlId='remarks'>
+                                    <Form.Label>備考</Form.Label>
+                                    <Form.Control
+                                        as='textarea'
+                                        row='5'
+                                        placeholder='今回のシフトに関してなにか希望があれば記述してください'
+                                        value={remarks}
+                                        onChange={(e) => setRemarks(e.target.value)}
+                                    >
+                                    </Form.Control>
+                                </Form.Group>
+                            </Col>
+                            <Col md={4}　className='d-grid gap-2 mt-4'>
+                                <Button type='submit' variant='primary' size='lg'>
+                                    提出
+                                </Button>
+                            </Col>
+                        </Row>
                 </Form>
 
             

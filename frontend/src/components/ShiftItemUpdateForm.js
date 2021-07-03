@@ -45,7 +45,6 @@ function ShiftItemUpdateForm({ shiftItem, date }) {
                 setStartTime(String(shiftItem.start_time).substring(0,5))
                 setEndTime(String(shiftItem.end_time).substring(0, 5))
                 setIsDefault(false)
-                console.log('trigered')
             } else {
                 if (isAllDay) {
                     setStartTime('07:00')
@@ -58,12 +57,10 @@ function ShiftItemUpdateForm({ shiftItem, date }) {
         
             if (date && !isWork) {
                 removeShiftItem(shiftDispatch, date)
-                console.log('remove item')
             }
             
             if (isWork && date && startTime && endTime) {
                 addShiftItem(shiftDispatch, date, isWork, startTime, endTime, isAllDay)
-                console.log('success for dispatch')
             }
 
 

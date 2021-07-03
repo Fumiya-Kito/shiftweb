@@ -23,7 +23,7 @@ function ProfileScreen({ history }) {
     const {userInfo} = loginState
     const dispatch = useProfileDispatch()
     const profileState = useProfileStore()
-    const { profile } = profileState
+    const { profile, loading: profileLoading } = profileState
     const shiftState = useShiftStore()
     const { period, deadline, isSubmitted, loading } = shiftState
     const shiftDispatch = useShiftDispatch()
@@ -51,7 +51,6 @@ function ProfileScreen({ history }) {
                     config
                 )
                 setShifts(data)
-                console.log('shifts: ', data)
                 
                 for (let i = 0; i < data.length; i++){
                     if (data[i].period_start === getStringDate(period[0])) {
@@ -68,7 +67,6 @@ function ProfileScreen({ history }) {
 
     return (
         <div>
-            {console.log(shifts)}
             <h1>ようこそ {profile.name} さん</h1>
             <Row className='py-3'>
                 
@@ -124,19 +122,14 @@ function ProfileScreen({ history }) {
                     </Col>
                 }
 
-                <Col md={7} sm={12} className='py-2'>
-                    <Row>
-                        <Col md ={10} sm={10} xs={10}>
-                            <h4>プロフィール</h4>
-                        </Col>
-                        <Col md={2} sm={2} xs={2} className='m-0 px-0 pb-2 text-center'>
-                            <LinkContainer to={'/update/profile'}>
-                                    <Button className='btn-sm'>編集</Button>
-                            </LinkContainer>
-                        </Col>
-                    </Row>
 
-                    <Table striped hover responsive className='table-sm border'>
+
+                {profileLoading ? <Loader /> :
+                    <Col md={7} sm={12} className='py-2'>
+                        <h4>プロフィール</h4>
+
+
+                        <Table striped hover responsive className='table-sm border'>
                             <thead>
                                 <tr>
                                     <th>Key</th>
@@ -208,8 +201,9 @@ function ProfileScreen({ history }) {
                             
                             </tbody>
                         </Table>
-                    
-                </Col>
+                    </Col>
+                } 
+
 
             </Row>
         </div>

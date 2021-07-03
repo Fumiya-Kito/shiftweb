@@ -91,6 +91,8 @@ export const register = async (name, email, password, dispatch) => {
 }
 
 export const getProfile = async (dispatch, userInfo) => {
+    dispatch({ type: USER_PROFILE_REQUEST })
+    
     const config = {
         headers: {
             'Content-type': 'application/json',

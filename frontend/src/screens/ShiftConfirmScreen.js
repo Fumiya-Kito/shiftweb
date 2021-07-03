@@ -47,7 +47,6 @@ function ShiftConfirmScreen({ history, match }) {
 
     return (
         <div>
-            {console.log(shift)}
             <Link to='/profile' className='btn my-2' style={{ background: '#999999'}}>
                 ＜ 戻る
             </Link>
