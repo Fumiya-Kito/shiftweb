@@ -9,4 +9,5 @@ urlpatterns = [
     path('getuser/', views.getUser, name="user"),
     path('profiles/', views.getProfiles, name="profiles"),
     path('profile/', views.getProfile, name="profile"),
+    path('update/profile/', views.updateProfile, name="update-profile"),
 ]

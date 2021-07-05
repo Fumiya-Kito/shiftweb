@@ -63,16 +63,6 @@ function ShiftItemForm({history, date}) {
 
                 <Container style={{color: changeColor(isWork)}}>
                     <Form.Group >
-                        {/* <Form.Label className={'m-0'}>日付</Form.Label>
-                        <Form.Control
-                        type='date'
-                        value={date}
-                        onChange={(e) => setDate(e.target.value)}
-                        className={'mb-3'}
-                            required
-                            // style={{display: 'none'}}
-                            >
-                        </Form.Control> */}
 
                         <Form.Label className={'m-0'}>出欠</Form.Label>
                         <Form.Control

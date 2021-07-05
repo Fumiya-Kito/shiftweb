@@ -14,9 +14,7 @@ import { format } from 'date-fns'
 
 function ProfileScreen({ history }) {
     
-    // const [profile, setProfile] = useState([])
     const [shifts, setShifts] = useState([])
-    // const [isSubmitted, setIsSubmitted] = useState(false)
 
 
     const loginState = useLoginStore()
@@ -106,11 +104,11 @@ function ProfileScreen({ history }) {
                                         <td>
                                             { shift.is_confirmed ? 
                                                 <LinkContainer to={`/shifts/confirm/${shift._id}`}>
-                                                    <Button className='btn-sm' variant='primary'>詳細</Button>
+                                                    <Button className='btn-sm' variant='outline-primary'>詳細</Button>
                                                 </LinkContainer> 
                                                 :
                                                 <LinkContainer to={`/shifts/update/${shift._id}`}>
-                                                    <Button className='btn-sm' variant='info'>更新</Button>
+                                                    <Button className='btn-sm' variant='outline-info'>更新</Button>
                                                 </LinkContainer> 
                                             }
                                         </td>
@@ -126,7 +124,18 @@ function ProfileScreen({ history }) {
 
                 {profileLoading ? <Loader /> :
                     <Col md={7} sm={12} className='py-2'>
-                        <h4>プロフィール</h4>
+
+                    <Row>
+                        <Col md ={10} sm={10} xs={10}>
+                            <h4>プロフィール</h4>
+                        </Col>
+                        <Col md={2} sm={2} xs={2} className='m-0 px-0 pb-2 text-center'>
+                            <LinkContainer to={'/update/profile'}>
+                                    <Button variant='outline-secondary'className='btn-sm'>編集</Button>
+                            </LinkContainer>
+                        </Col>
+                    </Row>
+                        
 
 
                         <Table striped hover responsive className='table-sm border'>
@@ -165,7 +174,22 @@ function ProfileScreen({ history }) {
                                 </tr>
                                 <tr>
                                     <td>研修中</td>
-                                    <td>{String(profile.is_rookie)}</td>
+                                    <td>{profile.is_rookie ? '研修中' : '修了'}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>オープン</td>
+                                    <td>{profile.is_open_staff ? '可' : '不可'}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>10時締め</td>
+                                    <td>{profile.is_pre_close_staff ? '可' : '不可'}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>締め</td>
+                                    <td>{profile.is_close_staff ? '可' : '不可'}</td>
                                     <td></td>
                                 </tr>
                                 <tr>
@@ -196,7 +220,7 @@ function ProfileScreen({ history }) {
                                 <tr>
                                     <td> 最寄り駅</td>
                                     <td> {profile.station}</td>
-                                    <td> 当社最寄り駅までの最短経路が交通費支給額となります</td>
+                                    <td> 当社最寄り駅/バス停までの最短経路が交通費支給額となります</td>
                                 </tr>
                             
                             </tbody>

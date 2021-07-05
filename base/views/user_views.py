@@ -74,3 +74,26 @@ def getProfile(request):
     return Response(serializer.data)
 
 
+@api_view(['PUT'])
+def updateProfile(request):
+    data = request.data
+    user = request.user
+    profile = user.profile
+
+    profile.name = data['name']
+    profile.duty = data['duty']
+    profile.employment_status = data['employment']
+    profile.section = data['section']
+    profile.is_rookie = data['isRookie']
+    profile.is_open_staff = data['isOpen']
+    profile.is_pre_close_staff = data['isPreClose']
+    profile.is_close_staff = data['isClose']
+    profile.start_default = data['startDefault']
+    profile.end_default = data['endDefault']
+    profile.desired_times_per_week = data['weeklyTime']
+    profile.desired_working_time = data['workTime']
+    profile.commute = data['commute']
+    profile.station = data['station']
+
+    profile.save()
+    return Response('Profile Updated!')

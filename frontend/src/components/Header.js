@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 
-import { useLoginStore, useLoginDispatch, useProfileDispatch, useShiftDispatch, useShiftStore } from '../context'
+import { useLoginStore, useLoginDispatch, useProfileDispatch, useShiftDispatch, useShiftStore, useProfileStore } from '../context'
 import { logout } from '../actions/userActions'
 import { SHIFT_RESET } from '../constants/shiftConstants'
 import { USER_PROFILE_RESET } from '../constants/userConstants'
@@ -13,6 +13,8 @@ function Header() {
     const loginDispatch = useLoginDispatch()
     const { userInfo } = state
     const shiftDispatch = useShiftDispatch()
+    const profileState = useProfileStore()
+    const {profile} = profileState
     const profileDispatch = useProfileDispatch()
     
 
@@ -29,11 +31,8 @@ function Header() {
                     <Navbar.Brand>Shift Web</Navbar.Brand>
                         <Nav className='mr-auto p-1'>
 
-                            <LinkContainer to='/'>
-                                <Nav.Link>Home</Nav.Link>
-                            </LinkContainer>
                             {userInfo ? (
-                                <NavDropdown title={userInfo.name} id='username' className='px-4'>
+                                <NavDropdown title={profile.name} id='username' className='px-4'>
                                     <LinkContainer to='/profile'>
                                         <NavDropdown.Item>Profile</NavDropdown.Item>
                                     </LinkContainer>
