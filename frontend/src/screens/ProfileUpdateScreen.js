@@ -51,8 +51,8 @@ function ProfileUpdateScreen({history}) {
             profile.is_close_staff ? setIsClose(profile.is_close_staff) : setIsClose(false)
             profile.start_default ? setStartDefault(profile.start_default) : setStartDefault('')
             profile.end_default ? setEndDefault(profile.end_default) : setEndDefault('')
-            profile.desired_times_per_week ? setWeeklyWork(profile.desired_times_per_week) : setWeeklyWork('')
-            profile.desired_working_time ? setWorkTime(profile.desired_working_time) : setWorkTime('')
+            profile.desired_times_per_week ? setWeeklyWork(profile.desired_times_per_week) : setWeeklyWork(0)
+            profile.desired_working_time ? setWorkTime(profile.desired_working_time) : setWorkTime(0)
             profile.commute ? setCommute(profile.commute) : setCommute('')
             profile.station ? setStation(profile.station) : setStation('')
 
@@ -271,7 +271,7 @@ function ProfileUpdateScreen({history}) {
                             <option value={3}>3回</option>
                             <option value={4}>4回</option>
                             <option value={5}>5回</option>
-                            <option value={''}>「週間希望シフト回数」を選択してください</option>
+                            <option value={0}>「週間希望シフト回数」を選択してください</option>
                         </Form.Control>
                     </Form.Group>
 
@@ -290,7 +290,7 @@ function ProfileUpdateScreen({history}) {
                             <option value={6}>6h</option>
                             <option value={7}>7h</option>
                             <option value={8}>8h</option>
-                            <option value={''}>「希望就労時間」を選択してください</option>
+                            <option value={0}>「希望就労時間」を選択してください</option>
                         </Form.Control>
                     </Form.Group>
 

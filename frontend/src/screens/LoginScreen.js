@@ -13,7 +13,7 @@ function LoginScreen({history, location}) {
     // const [state, dispatch] = useUserLoginReducer()
     const state = useLoginStore()
     const dispatch = useLoginDispatch()
-    const {userInfo, loading, error} = state
+    const {userInfo, error} = state
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -35,7 +35,7 @@ function LoginScreen({history, location}) {
     return (
         <FormContainer>
             <h1>Sign In</h1>
-            {loading && <Loader />}
+            
             {error && <Message variant='danger'>'メールアドレスかパスワードが間違っています'</Message>}
             
             <Form onSubmit={submitHandler}>

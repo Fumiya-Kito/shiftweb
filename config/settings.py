@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -97,7 +98,9 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'frontend/build')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -116,10 +119,21 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'shiftweb',
+        'USER': 'postgres',
+        'PASSWORD': 'kotamame',
+        'HOST': 'localhost',
+        'PORT': '5433'
     }
 }
 
@@ -164,7 +178,8 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/images/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static'
+    BASE_DIR / 'static',
+    BASE_DIR / 'frontend/build/static'
 ]
 MEDIA_ROOT = BASE_DIR / 'static/images'
 

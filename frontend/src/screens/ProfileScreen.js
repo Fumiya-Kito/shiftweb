@@ -86,36 +86,39 @@ function ProfileScreen({ history }) {
 
                         
                         <h4 className='mt-5'>シフト管理</h4>
-                        <Table striped hover responsive className='table-sm border' >
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>PERIOD</th>
-                                    <th>STATUS</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {shifts.map((shift) => (
-                                    <tr key={shift._id}>
-                                        <td>{shift._id}</td>
-                                        <td>{shift.period_start} {' '} ~ {' '}{shift.period_end}</td>
-                                        <td>{shift.is_confirmed ? '確定' : '未確定'}</td>
-                                        <td>
-                                            { shift.is_confirmed ? 
-                                                <LinkContainer to={`/shifts/confirm/${shift._id}`}>
-                                                    <Button className='btn-sm' variant='outline-primary'>詳細</Button>
-                                                </LinkContainer> 
-                                                :
-                                                <LinkContainer to={`/shifts/update/${shift._id}`}>
-                                                    <Button className='btn-sm' variant='outline-info'>更新</Button>
-                                                </LinkContainer> 
-                                            }
-                                        </td>
+                        {console.log(shifts)}
+                        {shifts.length === 0 ? <Message variant='info'>シフトがありません</Message> :
+                            <Table striped hover responsive className='table-sm border' >
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>PERIOD</th>
+                                        <th>STATUS</th>
+                                        <th></th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </Table>          
+                                </thead>
+                                <tbody>
+                                    {shifts.map((shift) => (
+                                        <tr key={shift._id}>
+                                            <td>{shift._id}</td>
+                                            <td>{shift.period_start} {' '} ~ {' '}{shift.period_end}</td>
+                                            <td>{shift.is_confirmed ? '確定' : '未確定'}</td>
+                                            <td>
+                                                { shift.is_confirmed ? 
+                                                    <LinkContainer to={`/shifts/confirm/${shift._id}`}>
+                                                        <Button className='btn-sm' variant='outline-primary'>詳細</Button>
+                                                    </LinkContainer> 
+                                                    :
+                                                    <LinkContainer to={`/shifts/update/${shift._id}`}>
+                                                        <Button className='btn-sm' variant='outline-info'>更新</Button>
+                                                    </LinkContainer> 
+                                                }
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </Table>          
+                        }
                         
                     </Col>
                 }
