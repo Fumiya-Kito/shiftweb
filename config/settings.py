@@ -32,7 +32,7 @@ SECRET_KEY = '^)hi)qevfvz&ot%bm9d+zf!8^=)i8m^8f1upvnmfzvn8e@&*$f'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'shiftweb.herokuapp.com/']
 
 
 # Application definition
@@ -89,7 +89,7 @@ SIMPLE_JWT = {
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -187,7 +187,12 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
     BASE_DIR / 'frontend/build/static'
 ]
+
 MEDIA_ROOT = BASE_DIR / 'static/images'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+
+if os.getcwd() == '/app':
+    DEBUG = False
