@@ -86,7 +86,6 @@ function ProfileScreen({ history }) {
 
                         
                         <h4 className='mt-5'>シフト管理</h4>
-                        {console.log(shifts)}
                         {shifts.length === 0 ? <Message variant='info'>シフトがありません</Message> :
                             <Table striped hover responsive className='table-sm border' >
                                 <thead>
@@ -141,7 +140,7 @@ function ProfileScreen({ history }) {
                         
 
 
-                        <Table striped hover responsive className='table-sm border'>
+                        <Table striped hover responsive size='sm' className='border'>
                             <thead>
                                 <tr>
                                     <th>Key</th>
@@ -198,21 +197,21 @@ function ProfileScreen({ history }) {
                                 <tr>
                                     <td> 業務開始時間</td>
                                     <td> {profile.start_default.substring(0,5)}</td>
-                                    <td>シフト提出時に自動入力される値になります</td>
+                                    <td>提出時に自動入力される値です</td>
                                 </tr>
                                 <tr>
                                     <td> 業務終了時間</td>
                                     <td> {profile.end_default.substring(0,5)}</td>
-                                    <td>シフト提出時に自動入力される値になります</td>
+                                    <td>提出時に自動入力される値です</td>
                                 </tr>
                                 <tr>
                                     <td> 週間希望シフト回数</td>
-                                    <td> 週{profile.desired_times_per_week}回</td>
+                                    <td> 週{profile.desired_times_per_week}</td>
                                     <td>シフト作成の参考にします</td>
                                 </tr>
                                 <tr>
                                     <td> 希望就労時間</td>
-                                    <td> {profile.desired_working_time}時間/回</td>
+                                    <td> {profile.desired_working_time}h</td>
                                     <td>シフト作成の参考にします</td>
                                 </tr>
                                 <tr>
@@ -223,7 +222,7 @@ function ProfileScreen({ history }) {
                                 <tr>
                                     <td> 最寄り駅</td>
                                     <td> {profile.station}</td>
-                                    <td> 当社最寄り駅/バス停までの最短経路が交通費支給額となります</td>
+                                    <td> 最短経路が交通費支給額です</td>
                                 </tr>
                             
                             </tbody>

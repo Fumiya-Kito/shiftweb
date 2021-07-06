@@ -34,13 +34,13 @@ function Header() {
                             {userInfo ? (
                                 <NavDropdown title={profile.name} id='username' className='px-4'>
                                     <LinkContainer to='/profile'>
-                                        <NavDropdown.Item>Profile</NavDropdown.Item>
+                                        <NavDropdown.Item>ホーム</NavDropdown.Item>
                                     </LinkContainer>
-                                    <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+                                    <NavDropdown.Item onClick={logoutHandler}>ログアウト</NavDropdown.Item>
                                 </NavDropdown>
                             ) : (
                                 <LinkContainer to='/login'>                        
-                                    <Nav.Link><i className="fas fa-user"></i>Login</Nav.Link>
+                                    <Nav.Link><i className="fas fa-user"></i>ログイン</Nav.Link>
                                 </LinkContainer>
                             )}
                         </Nav>

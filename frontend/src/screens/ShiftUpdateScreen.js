@@ -22,12 +22,13 @@ function ShiftUpdateScreen({ history, match }) {
     const shiftId = match.params.id
     const [shift, setShift] = useState([])
     const [remarks, setRemarks] = useState([])
+    const [month, setMonth] = useState([])
+    const [loading, setLoading] = useState(true)
 
 
     //for Calender
     const days = ["日", "月", "火", "水", "木", "金", "土"]
     
-    const month = takeMonth(new Date(String(shift.period_start)))()
 
     //functions
     const getStringDate = (dt = new Date()) => {
@@ -49,14 +50,18 @@ function ShiftUpdateScreen({ history, match }) {
             
             async function fetchShift() { 
                 const { data } = await axios.get(
-                    `/api/shifts/confirm/${shiftId}`,
+                    `/api/shifts/confirm/${shiftId}/`,
                     config
                 )
                 setShift(data)
                 setRemarks(data.remarks)
+                setMonth(takeMonth(new Date(String(data.period_start)))())
+                setLoading(false)
+                console.log(data)
             }        
             fetchShift()
         }
+
         
     }, [userInfo, history, match])
     
@@ -90,7 +95,7 @@ function ShiftUpdateScreen({ history, match }) {
             </Link>
             <h1 className='p-4'>シフト更新</h1>
             
-            {!month[0][6].getMonth() ? <Loader /> :
+            {loading ? <Loader /> :
             
                 <div className='text-center'> 
                     <h4 style={{ borderBottom: '1px solid', display: 'inline-block' }}>

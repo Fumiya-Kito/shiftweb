@@ -34,16 +34,16 @@ function LoginScreen({history, location}) {
 
     return (
         <FormContainer>
-            <h1>Sign In</h1>
+            <h1>ログイン</h1>
             
             {error && <Message variant='danger'>'メールアドレスかパスワードが間違っています'</Message>}
             
             <Form onSubmit={submitHandler}>
                 <Form.Group controlId='email'>
-                    <Form.Label>Email Address</Form.Label>
+                    <Form.Label className='mb-0'>メールアドレス</Form.Label>
                     <Form.Control
                         type='email'
-                        placeholder='Enter Email'
+                        placeholder='eメールアドレスを入力'
                         value={email}
                         onChange={
                             (e) => setEmail(e.target.value) 
@@ -53,10 +53,10 @@ function LoginScreen({history, location}) {
 
 
                 <Form.Group controlId='password'>
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label className='mb-0 mt-3'>パスワード</Form.Label>
                     <Form.Control
                         type='password'
-                        placeholder='Enter Password'
+                        placeholder='パスワードを入力'
                         value={password}
                         onChange={
                             (e) => setPassword(e.target.value)
@@ -64,17 +64,17 @@ function LoginScreen({history, location}) {
                     ></Form.Control>
                 </Form.Group>
 
-                <Button type='submit' variant='primary'>
-                    Sign In
+                <Button type='submit' variant='primary' className='mt-2 mb-3'>
+                    ログイン
                 </Button>
 
             </Form>
 
             <Row className="py-3">
                 <Col>
-                    New Customer?
+                    アカウントをお持ちでない方：
                     <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
-                        {' '} Register
+                        {' '} 登録
                     </Link>
                 </Col>
             </Row>

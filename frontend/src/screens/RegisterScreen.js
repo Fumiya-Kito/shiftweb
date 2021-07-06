@@ -20,7 +20,7 @@ function RegisterScreen({history}) {
 
     const loginState = useLoginStore()
     const loginDispatch = useLoginDispatch()
-    const {userInfo, loading, error} = loginState
+    const {userInfo} = loginState
 
     useEffect(() => {
         if (userInfo) {
@@ -45,56 +45,56 @@ function RegisterScreen({history}) {
 
     return (
         <FormContainer>
-            <h1>Sign Up</h1>
+            <h1>アカウント登録</h1>
             {message && <Message variant='danger'>{message}</Message>}
 
             <Form onSubmit={submitHandler}>
                 <Form.Group controlId='name' className='mb-4'>
-                    <Form.Label>Name</Form.Label>
+                    <Form.Label>名前</Form.Label>
                     <Form.Control
                         required
                         type='name'
-                        placeholder='Enter Name'
+                        placeholder='名前を入力'
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                     ></Form.Control>
                 </Form.Group>
 
                 <Form.Group controlId='email' className='mb-4'>
-                    <Form.Label>Email Address</Form.Label>
+                    <Form.Label>メールアドレス</Form.Label>
                     <Form.Control
                         required
                         type='email'
-                        placeholder='Enter Email'
+                        placeholder='メールアドレスを入力'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     ></Form.Control>
                 </Form.Group>
 
                 <Form.Group controlId='password' className='mb-4'>
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>パスワード</Form.Label>
                     <Form.Control
                         required
                         type='password'
-                        placeholder='Enter Password'
+                        placeholder='パスワードを入力'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     ></Form.Control>
                 </Form.Group>
 
                 <Form.Group controlId='passwordConfirm' className='mb-4'>
-                    <Form.Label>Confirm Password</Form.Label>
+                    <Form.Label>パスワード確認</Form.Label>
                     <Form.Control
                         required
                         type='password'
-                        placeholder='Confirm Password'
+                        placeholder='パスワードをもう一度入力'
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     ></Form.Control>
                 </Form.Group>
 
                 <Button type='submit' variant='primary'>
-                    Register
+                    登録
                 </Button>
             </Form>
 
