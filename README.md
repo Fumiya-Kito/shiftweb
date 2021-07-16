@@ -36,6 +36,9 @@
    - Heroku
    - AWS/RDS (PostgreSQL)
 
+## 補足
+Demo User に関連するデータは自由に書き換えていただいて大丈夫です。
+
 ### このプロジェクトに関するヘルプをどこで得るか
 
 cfbc.pearl@gmail.com
