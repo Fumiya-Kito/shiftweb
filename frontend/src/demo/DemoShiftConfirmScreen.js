@@ -10,7 +10,7 @@ import {format} from 'date-fns'
 // import  useMediaQuery  from 'react-response'
 
 
-function ShiftConfirmScreen({ history, match }) {
+function DemoShiftConfirmScreen({ history, match }) {
     
     //for API
     const shiftId = match.params.id
@@ -95,4 +95,4 @@ function ShiftConfirmScreen({ history, match }) {
     )
 }
 
-export default ShiftConfirmScreen
+export default DemoShiftConfirmScreen
