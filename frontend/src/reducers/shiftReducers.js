@@ -4,6 +4,7 @@ import {
     SHIFT_ADD_ITEM,
     SHIFT_REMOVE_ITEM,
     SHIFT_CHANGE_STATUS,
+    SHIFT_CHANGE_PERIOD,
     SHIFT_RESET,
 } from '../constants/shiftConstants'
 
@@ -59,7 +60,13 @@ export const shiftReducer = (state, action) => {
             return {
                 ...state,
                 loading: false,
-                isSubmitted: true
+                isSubmitted: action.payload
+            }
+        case SHIFT_CHANGE_PERIOD:
+            return {
+                ...state,
+                loading: false,
+                deadline: action.payload
             }
         case SHIFT_RESET:
             return shiftInitialState

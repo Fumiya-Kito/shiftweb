@@ -7,12 +7,10 @@ import { useLoginStore, useShiftStore, useProfileStore} from '../context'
 import { takeMonth } from '../constants/month'
 import  ShiftItemForm  from '../components/ShiftItemForm'
 
-import {  } from '../context'
 
 
 
-
-function ShiftSubmitScreen({ history }) {
+function DemoShiftSubmitScreen({ history }) {
     
     //global State
     const loginState = useLoginStore()
@@ -38,7 +36,7 @@ function ShiftSubmitScreen({ history }) {
         if (!userInfo) {
             history.push('/login')
         } else if (isSubmitted) {
-            history.push('/profile')
+            history.push('/demo/profile')
         }
 
     }, [userInfo, history])
@@ -65,13 +63,13 @@ function ShiftSubmitScreen({ history }) {
                 },
                 config
             )
-            history.push('/profile')
+            history.push('/demo/profile')
         }
     } 
 
     return (
         <div>
-            <Link to='/profile' className='btn my-2' style={{ background: '#999999'}}>
+            <Link to='/demo/profile' className='btn my-2' style={{ background: '#999999'}}>
                 ＜ 戻る
             </Link>
             <h1 className='p-4'>新規シフト提出</h1>
@@ -136,4 +134,4 @@ function ShiftSubmitScreen({ history }) {
 }
 //空タグでkey属性をもたせたい場合、Fragmentを使う
 
-export default ShiftSubmitScreen
+export default DemoShiftSubmitScreen

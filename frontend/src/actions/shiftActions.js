@@ -2,6 +2,7 @@ import {
     SHIFT_ADD_ITEM,
     SHIFT_REMOVE_ITEM,
     SHIFT_CHANGE_STATUS,
+    SHIFT_CHANGE_PERIOD,
     SHIFT_RESET,
 } from '../constants/shiftConstants'
 
@@ -26,8 +27,16 @@ export const removeShiftItem = (dispatch, date) => {
     })
 }
 
-export const changeSubmitStatus = (dispatch) => {
+export const changeSubmitStatus = (dispatch, value) => {
     dispatch({
         type: SHIFT_CHANGE_STATUS,
+        payload: value
+    })
+}
+
+export const changePeriod = (dispatch, time) => {
+    dispatch({
+        type: SHIFT_CHANGE_PERIOD,
+        payload: time
     })
 }

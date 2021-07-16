@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 
-import { useLoginStore, useLoginDispatch, useProfileDispatch, useShiftDispatch, useShiftStore, useProfileStore } from '../context'
+import { useLoginStore, useLoginDispatch, useProfileDispatch, useShiftDispatch, useProfileStore } from '../context'
 import { logout } from '../actions/userActions'
 import { SHIFT_RESET } from '../constants/shiftConstants'
 import { USER_PROFILE_RESET } from '../constants/userConstants'
@@ -21,7 +21,7 @@ function Header() {
     const logoutHandler = () => {
         logout(loginDispatch)
         shiftDispatch({type: SHIFT_RESET})
-        profileDispatch({type: USER_PROFILE_RESET})
+        profileDispatch({ type: USER_PROFILE_RESET })
     }
 
     return (
@@ -33,10 +33,23 @@ function Header() {
 
                             {userInfo ? (
                                 <NavDropdown title={profile.name} id='username' className='px-4'>
-                                    <LinkContainer to='/profile'>
-                                        <NavDropdown.Item>ホーム</NavDropdown.Item>
-                                    </LinkContainer>
-                                    <NavDropdown.Item onClick={logoutHandler}>ログアウト</NavDropdown.Item>
+                                {userInfo.email === 'demo@email.com' ?
+                                    <>
+                                        <LinkContainer to='/demo/profile'>
+                                            <NavDropdown.Item>ホーム</NavDropdown.Item>
+                                        </LinkContainer>
+                                        <LinkContainer to='/login'>
+                                            <NavDropdown.Item onClick={logoutHandler}>ログアウト</NavDropdown.Item>
+                                        </LinkContainer>
+                                    </>
+                                    :
+                                    <>
+                                        <LinkContainer to='/profile'>
+                                            <NavDropdown.Item>ホーム</NavDropdown.Item>
+                                        </LinkContainer>
+                                        <NavDropdown.Item onClick={logoutHandler}>ログアウト</NavDropdown.Item>
+                                    </>
+                                    }
                                 </NavDropdown>
                             ) : (
                                 <LinkContainer to='/login'>                        

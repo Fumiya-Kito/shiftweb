@@ -31,7 +31,7 @@ function RegisterScreen({history}) {
     const submitHandler = async(e) => {
         e.preventDefault()
         if (password !== confirmPassword) {
-            setMessage('Password do not match')
+            setMessage('パスワードが一致しません')
         } else {
             await axios.post(
                 '/api/users/register/',

@@ -20,6 +20,11 @@ import ShiftSubmitScreen from './screens/ShiftSubmitScreen'
 import ShiftItemForm from './components/ShiftItemForm'
 import ShiftItemUpdateForm from './components/ShiftItemUpdateForm'
 
+import DemoProfileScreen from './demo/DemoProfileScreen'
+import DemoProfileUpdateScreen from './demo/DemoProfileUpdateScreen'
+import DemoSubmitScreen from './demo/DemoSubmitScreen'
+import DemoShiftUpdateScreen from './demo/DemoShiftUpdateScreen'
+import DemoShiftConfirmScreen from './demo/DemoShiftConfirmScreen'
 
 function App() {
   return (
@@ -42,6 +47,12 @@ function App() {
                 <Route path='/shifts/update/:id' component={ShiftUpdateScreen}/>
                 <Route path='/shifts/submit' component={ShiftSubmitScreen} />
               
+                <Route path='/demo/profile' component={DemoProfileScreen} />
+                <Route path='/demo/update/profile' component={DemoProfileUpdateScreen} />
+                <Route path='/demo/shift/submit' component={DemoSubmitScreen} />
+                <Route path='/demo/shifts/update/:id' component={DemoShiftUpdateScreen} />
+                <Route path='/demo/shifts/confirm/:id' component={DemoShiftConfirmScreen} />
+
           </Container>
         </main>
             </ProfileProvider>

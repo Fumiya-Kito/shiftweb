@@ -1,24 +1,25 @@
-import React, { useEffect, useState, useReducer } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Row, Col, Table, Container } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import axios from 'axios'
-import { useLoginStore, useProfileDispatch, useProfileStore, useShiftDispatch, useShiftStore} from '../context'
-import { getProfile } from '../actions/userActions'
-import { changeSubmitStatus } from '../actions/shiftActions'
+import { useLoginStore, useLoginDispatch , useProfileDispatch, useProfileStore, useShiftDispatch, useShiftStore} from '../context'
+import { getProfile, login } from '../actions/userActions'
+import { changeSubmitStatus, changePeriod } from '../actions/shiftActions'
 import { SHIFT_REQUEST, SHIFT_SUCCESS } from '../constants/shiftConstants'
 
 
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { format } from 'date-fns'
+import { format, endOfDay, endOfMonth, subDays, startOfMonth, startOfDay } from 'date-fns'
 
-function ProfileScreen({ history }) {
-    
+function DemoProfileScreen({ history }) {
+    //local
     const [shifts, setShifts] = useState([])
 
-
+    //global
     const loginState = useLoginStore()
-    const {userInfo} = loginState
+    const { userInfo } = loginState
+    const loginDispatch = useLoginDispatch()
     const dispatch = useProfileDispatch()
     const profileState = useProfileStore()
     const { profile, loading: profileLoading } = profileState
@@ -32,7 +33,9 @@ function ProfileScreen({ history }) {
 
     useEffect(() => {
         if (!userInfo) {
-            history.push('/login')
+            const demoEmail = 'demo@email.com'
+            const demoPassword = 'demo1234'
+            login(demoEmail, demoPassword, loginDispatch)
         } else {
             getProfile(dispatch, userInfo)
 
@@ -50,18 +53,29 @@ function ProfileScreen({ history }) {
                 )
                 setShifts(data)
                 
-                for (let i = 0; i < data.length; i++){
-                    if (data[i].period_start === getStringDate(period[0])) {
-                        changeSubmitStatus(shiftDispatch, true)
-                    }
-                }
-                
                 shiftDispatch({type: SHIFT_SUCCESS})
             }
             fetchShifts()
         }
         
-    }, [history, userInfo])
+    }, [history, userInfo, isSubmitted, period])
+
+//handler functions
+    const isSubmittedToTrue = () => {
+        changeSubmitStatus(shiftDispatch, true)
+    }
+    const isSubmittedToFalse = () => {
+        changeSubmitStatus(shiftDispatch, false)
+    }
+    const deadlineToDefault = () => {
+        changePeriod(shiftDispatch, subDays(endOfDay(endOfMonth(new Date())), 10))
+    }
+    const deadlineToStart = () => {
+        changePeriod(shiftDispatch, startOfDay(startOfMonth(new Date())))
+    }
+    const deadlineToEnd = () => {
+        changePeriod(shiftDispatch, endOfDay(endOfMonth(new Date())))
+    }
 
     return (
         <div>
@@ -74,8 +88,8 @@ function ProfileScreen({ history }) {
                     <Col md={5} sm={12} className='py-2'>
                         <h4>シフト提出</h4>
                         <Container className='border'>
-                            <LinkContainer to='/shifts/submit' className='d-grid gap-2 my-3 p-1'>
-                                <Button size='lg' variant='primary' disabled={isSubmitted || (new Date() > deadline)}>今月分はこちらから <p className='m-0'>{getStringDate(period[0])} ~ { getStringDate(period[1])}</p></Button>
+                            <LinkContainer to='/demo/shift/submit' className='d-grid gap-2 my-3 p-1'>
+                                <Button className='btn-lg' variant='outline-primary' disabled={isSubmitted || (new Date() > deadline)}>今月の提出分はこちらから <p className='m-0'>{getStringDate(period[0])} ~ { getStringDate(period[1])}</p></Button>
                             </LinkContainer>
                             <p className='my-0 py-0'>提出状態： {isSubmitted ?　<i style={{color: 'blue'}}>提出済み</i> : <i style={{color: 'red'}}>未提出</i>}</p>
                             <p className='my-0 py-0'>提出期限： {String(format(deadline, "yyyy-MM-dd' 'HH:mm"))} まで</p>
@@ -104,11 +118,11 @@ function ProfileScreen({ history }) {
                                             <td>{shift.is_confirmed ? '確定' : '未確定'}</td>
                                             <td>
                                                 { shift.is_confirmed ? 
-                                                    <LinkContainer to={`/shifts/confirm/${shift._id}`}>
+                                                    <LinkContainer to={`/demo/shifts/confirm/${shift._id}`}>
                                                         <Button className='btn-sm' variant='outline-primary'>詳細</Button>
                                                     </LinkContainer> 
                                                     :
-                                                    <LinkContainer to={`/shifts/update/${shift._id}`}>
+                                                    <LinkContainer to={`/demo/shifts/update/${shift._id}`}>
                                                         <Button className='btn-sm' variant='outline-info'>更新</Button>
                                                     </LinkContainer> 
                                                 }
@@ -132,7 +146,7 @@ function ProfileScreen({ history }) {
                             <h4>プロフィール</h4>
                         </Col>
                         <Col md={2} sm={2} xs={2} className='m-0 px-0 pb-2 text-center'>
-                            <LinkContainer to={'/update/profile'}>
+                            <LinkContainer to={'/demo/update/profile'}>
                                     <Button variant='outline-secondary'className='btn-sm'>編集</Button>
                             </LinkContainer>
                         </Col>
@@ -232,8 +246,39 @@ function ProfileScreen({ history }) {
 
 
             </Row>
+
+            <h4>コントローラー</h4>
+            <Message variant='info'>
+                ・一般のユーザーでは、「提出状態（来月分のシフト提出されているか）」と「提出期限」の状態管理を自動で行います。
+                <br></br>
+                <br></br>
+                ・Demoユーザーでは、「提出状態」と「提出期限」を自由に変更することができます。
+                （アクセスする日時よる制限、特定期間のシフトはユーザーに対して１つという制限を避けるため。）
+            </Message>
+
+            <Container className='border'>
+                <Row className='m-3'>
+                    <Col md={4} sm={4} xs={4}>
+                        <Button onClick={isSubmittedToTrue} variant='outline-info' disabled={isSubmitted}>提出済みにする</Button>
+                    </Col>
+                    <Col md={4} sm={4} xs={4}>
+                        <Button onClick={isSubmittedToFalse} variant='outline-danger' disabled={!isSubmitted}>未提出にする</Button>
+                    </Col>
+                </Row>
+                <Row className='m-3'>
+                    <Col>
+                        <Button onClick={deadlineToDefault} variant='outline-secondary'>提出期限をデフォルトに変更</Button>
+                    </Col>
+                    <Col>
+                        <Button onClick={deadlineToEnd} variant='outline-secondary'>提出期限を月末へ変更</Button>
+                    </Col>
+                    <Col>
+                        <Button onClick={deadlineToStart} variant='outline-secondary'>提出期限を月始へ変更</Button>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }
 
-export default ProfileScreen
+export default DemoProfileScreen
