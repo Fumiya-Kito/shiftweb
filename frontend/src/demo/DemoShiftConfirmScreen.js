@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom'
 import { useLoginStore } from '../context'
 
 import { takeMonth } from '../constants/month'
-import {format} from 'date-fns'
+import { format } from 'date-fns'
 
-// import  useMediaQuery  from 'react-response'
+import BackToDemoProfile from '../components/BackToDemoProfile'
 
 
 function DemoShiftConfirmScreen({ history, match }) {
@@ -47,9 +47,8 @@ function DemoShiftConfirmScreen({ history, match }) {
 
     return (
         <div>
-            <Link to='/demo/profile' className='btn my-2' style={{ background: '#999999'}}>
-                ＜ 戻る
-            </Link>
+            <BackToDemoProfile />
+
             <h1 className='p-4'>シフト確認</h1>
             {shift.shiftItems &&
             <div className='text-center'> 

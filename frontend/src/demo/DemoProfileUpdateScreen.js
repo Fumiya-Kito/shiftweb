@@ -6,6 +6,7 @@ import { Form, Button} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
+import BackToDemoProfile from '../components/BackToDemoProfile'
 
 import { TimePickerComponent } from '@syncfusion/ej2-react-calendars'
 
@@ -103,9 +104,8 @@ function DemoProfileUpdateScreen({history}) {
 
     return (
         <>
-            <Link to='/demo/profile' className='btn my-2' style={{ background: '#999999'}}>
-                ＜ 戻る
-            </Link>
+            <BackToDemoProfile />
+            
             {loading ? <Loader/> :
             <FormContainer>
                 <Form onSubmit={submitHandler} className='border p-3'>

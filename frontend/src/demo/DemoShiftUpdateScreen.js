@@ -8,6 +8,7 @@ import { takeMonth } from '../constants/month'
 import  ShiftItemUpdateForm from '../components/ShiftItemUpdateForm'
 
 import Loader from '../components/Loader'
+import BackToDemoProfile from '../components/BackToDemoProfile'
 
 
 function DemoShiftUpdateScreen({ history, match }) {
@@ -90,9 +91,7 @@ function DemoShiftUpdateScreen({ history, match }) {
 
     return (
         <div>
-            <Link to='/demo/profile' className='btn my-2' style={{ background: '#999999'}}>
-                ＜ 戻る
-            </Link>
+            <BackToDemoProfile/>
             <h1 className='p-4'>シフト更新</h1>
             
             {loading ? <Loader /> :

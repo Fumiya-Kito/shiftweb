@@ -10,6 +10,7 @@ import { SHIFT_REQUEST, SHIFT_SUCCESS } from '../constants/shiftConstants'
 
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import FormContainer from '../components/FormContainer'
 import { format, endOfDay, endOfMonth, subDays, startOfMonth, startOfDay } from 'date-fns'
 
 function DemoProfileScreen({ history }) {
@@ -211,12 +212,12 @@ function DemoProfileScreen({ history }) {
                                 <tr>
                                     <td> 業務開始時間</td>
                                     <td> {profile.start_default.substring(0,5)}</td>
-                                    <td>提出時に自動入力される値です</td>
+                                    <td>提出時の初期値となります</td>
                                 </tr>
                                 <tr>
                                     <td> 業務終了時間</td>
                                     <td> {profile.end_default.substring(0,5)}</td>
-                                    <td>提出時に自動入力される値です</td>
+                                    <td>提出時の初期値となります</td>
                                 </tr>
                                 <tr>
                                     <td> 週間希望シフト回数</td>
@@ -248,34 +249,29 @@ function DemoProfileScreen({ history }) {
             </Row>
 
             <h4>コントローラー</h4>
-            <Message variant='info'>
-                ・一般のユーザーでは、「提出状態（来月分のシフト提出されているか）」と「提出期限」の状態管理を自動で行います。
-                <br></br>
-                <br></br>
-                ・Demoユーザーでは、「提出状態」と「提出期限」を自由に変更することができます。
-                （アクセスする日時よる制限、特定期間のシフトはユーザーに対して１つという制限を避けるため。）
-            </Message>
 
             <Container className='border'>
+                <FormContainer>
+
                 <Row className='m-3'>
-                    <Col md={4} sm={4} xs={4}>
-                        <Button onClick={isSubmittedToTrue} variant='outline-info' disabled={isSubmitted}>提出済みにする</Button>
-                    </Col>
-                    <Col md={4} sm={4} xs={4}>
-                        <Button onClick={isSubmittedToFalse} variant='outline-danger' disabled={!isSubmitted}>未提出にする</Button>
-                    </Col>
+                    <p className='mb-0'>提出状態</p>
+                    <Button onClick={isSubmittedToTrue} variant='outline-info' disabled={isSubmitted}>提出済み</Button>
+                    <Button onClick={isSubmittedToFalse} variant='outline-danger' disabled={!isSubmitted}>未提出</Button>
                 </Row>
                 <Row className='m-3'>
-                    <Col>
-                        <Button onClick={deadlineToDefault} variant='outline-secondary'>提出期限をデフォルトに変更</Button>
-                    </Col>
-                    <Col>
-                        <Button onClick={deadlineToEnd} variant='outline-secondary'>提出期限を月末へ変更</Button>
-                    </Col>
-                    <Col>
-                        <Button onClick={deadlineToStart} variant='outline-secondary'>提出期限を月始へ変更</Button>
-                    </Col>
+                    <p className='mb-0'>提出期限</p>
+                    
+                        <Button onClick={deadlineToDefault} variant='outline-secondary'>デフォルト</Button>
+                        <Button onClick={deadlineToEnd} variant='outline-secondary'>月末へ</Button>
+                        <Button onClick={deadlineToStart} variant='outline-secondary'>月始へ</Button>
+
                 </Row>
+                </FormContainer>
+                <Message variant='info'>
+                    ・Demoユーザーでは、「提出状態」と「提出期限」を自由に変更することができます。
+                    <br></br>
+                    ・一般のユーザーでは、「提出状態（来月分のシフト提出されているか）」と「提出期限」の状態管理を自動で行います。
+                </Message>
             </Container>
         </div>
     )

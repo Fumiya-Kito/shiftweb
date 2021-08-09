@@ -125,23 +125,23 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'shiftweb',
-        'USER': 'kito',
-        'PASSWORD': env('DB_PASS'),
-        'HOST': 'shiftweb-fumi.clwozwf7rd6g.ap-northeast-1.rds.amazonaws.com',
-        'PORT': '5431'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'shiftweb',
+#         'USER': 'kito',
+#         'PASSWORD': env('DB_PASS'),
+#         'HOST': 'shiftweb-fumi.clwozwf7rd6g.ap-northeast-1.rds.amazonaws.com',
+#         'PORT': '5431'
+#     }
+# }
 
 
 # Password validation

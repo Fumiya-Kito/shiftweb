@@ -31,8 +31,8 @@ function Header() {
                     <Navbar.Brand>Shift Web</Navbar.Brand>
                         <Nav className='mr-auto p-1'>
 
-                            {userInfo ? (
-                                <NavDropdown title={profile.name} id='username' className='px-4'>
+                        {userInfo &&
+                            <NavDropdown title={profile.name} id='username' className='px-4'>
                                 {userInfo.email === 'demo@email.com' ?
                                     <>
                                         <LinkContainer to='/demo/profile'>
@@ -49,13 +49,9 @@ function Header() {
                                         </LinkContainer>
                                         <NavDropdown.Item onClick={logoutHandler}>ログアウト</NavDropdown.Item>
                                     </>
-                                    }
-                                </NavDropdown>
-                            ) : (
-                                <LinkContainer to='/login'>                        
-                                    <Nav.Link><i className="fas fa-user"></i>ログイン</Nav.Link>
-                                </LinkContainer>
-                            )}
+                                }
+                            </NavDropdown>
+                        }
                         </Nav>
                 
                 </Container>

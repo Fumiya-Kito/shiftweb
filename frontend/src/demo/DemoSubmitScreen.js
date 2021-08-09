@@ -8,7 +8,7 @@ import { takeMonth } from '../constants/month'
 import  ShiftItemForm  from '../components/ShiftItemForm'
 
 
-
+import BackToDemoProfile from '../components/BackToDemoProfile'
 
 function DemoShiftSubmitScreen({ history }) {
     
@@ -69,9 +69,7 @@ function DemoShiftSubmitScreen({ history }) {
 
     return (
         <div>
-            <Link to='/demo/profile' className='btn my-2' style={{ background: '#999999'}}>
-                ＜ 戻る
-            </Link>
+            <BackToDemoProfile/>
             <h1 className='p-4'>新規シフト提出</h1>
             
             <div className='text-center'> 
