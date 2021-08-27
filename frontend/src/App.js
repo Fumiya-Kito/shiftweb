@@ -26,6 +26,8 @@ import DemoSubmitScreen from './demo/DemoSubmitScreen'
 import DemoShiftUpdateScreen from './demo/DemoShiftUpdateScreen'
 import DemoShiftConfirmScreen from './demo/DemoShiftConfirmScreen'
 
+import UserListScreen from './screens/UserListScreen'
+
 function App() {
   return (
     <Router>
@@ -52,6 +54,9 @@ function App() {
                 <Route path='/demo/shift/submit' component={DemoSubmitScreen} />
                 <Route path='/demo/shifts/update/:id' component={DemoShiftUpdateScreen} />
                 <Route path='/demo/shifts/confirm/:id' component={DemoShiftConfirmScreen} />
+
+
+                <Route path='/admin/userlist' component={UserListScreen} />
 
           </Container>
         </main>
