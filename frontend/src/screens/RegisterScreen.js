@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useReducer} from 'react'
-import { Form, Button } from 'react-bootstrap'
-import { login, register } from '../actions/userActions'
+import { Form, Button, Row, Col } from 'react-bootstrap'
+import { login } from '../actions/userActions'
+import { Link } from 'react-router-dom'
+
 
 import axios from 'axios'
 
@@ -9,7 +11,7 @@ import Message from '../components/Message'
 
 import { useRegisterStore, useLoginStore, useLoginDispatch } from '../context'
 
-function RegisterScreen({history}) {
+function RegisterScreen({history, location}) {
     //useState
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -21,6 +23,9 @@ function RegisterScreen({history}) {
     const loginState = useLoginStore()
     const loginDispatch = useLoginDispatch()
     const {userInfo} = loginState
+
+    const redirect = location.search ? location.search.split('=')[1] : '/'
+
 
     useEffect(() => {
         if (userInfo) {
@@ -97,6 +102,15 @@ function RegisterScreen({history}) {
                     登録
                 </Button>
             </Form>
+
+            <Row className="py-3">
+                <Col>
+                    アカウントをお持ち方：
+                    <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
+                        {' '} ログイン
+                    </Link>
+                </Col>
+            </Row>
 
         </FormContainer>
     )

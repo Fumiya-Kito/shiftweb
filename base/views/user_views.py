@@ -44,6 +44,14 @@ def getUser(request):
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def getUserById(request, pk):
+    user = User.objects.get(id=pk)
+    serializer = UserSerializer(user, many=False)
+    return Response(serializer.data)
+
+
 @api_view(['POST'])
 def registerUser(request):
     data = request.data

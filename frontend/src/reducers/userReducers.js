@@ -59,12 +59,3 @@ export const userProfileReducer = (state, action) => {
             return state
     }
 }
-// export const useUserLoginReducer = () => {
-//     const [state, dispatch] = useReducer(userLoginReducer, initialState)
-//     return [state, dispatch] 
-// }
-
-// export const useUserRegisterReducer = () => {
-//     const [state, dispatch] = useReducer(userRegisterReducer, initialState)
-//     return [state, dispatch] 
-// }
