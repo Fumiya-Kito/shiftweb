@@ -28,6 +28,7 @@ import DemoShiftConfirmScreen from './demo/DemoShiftConfirmScreen'
 
 import UserListScreen from './screens/UserListScreen'
 import UserEditScreen from './screens/UserEditScreen'
+import ShiftListScreen from './screens/ShiftListScreen'
 
 function App() {
   return (
@@ -59,6 +60,7 @@ function App() {
 
                 <Route path='/admin/userlist' component={UserListScreen} />
                 <Route path='/admin/user/:id/edit' component={UserEditScreen} />
+                <Route path='/admin/shiftlist' component={ShiftListScreen} />
 
           </Container>
         </main>

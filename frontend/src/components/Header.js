@@ -52,6 +52,19 @@ function Header() {
                                 }
                             </NavDropdown>
                         }
+
+                        {userInfo && userInfo.isAdmin && (
+                            <NavDropdown title='管理者権限' id='adminmenu'>
+                                <LinkContainer to='/admin/userlist'>
+                                    <NavDropdown.Item>ユーザー管理</NavDropdown.Item>
+                                </LinkContainer>
+
+                                <LinkContainer to='/admin/shiftlist'>
+                                    <NavDropdown.Item>シフト管理</NavDropdown.Item>
+                                </LinkContainer>
+                            </NavDropdown>
+                        )}
+
                         </Nav>
                 
                 </Container>

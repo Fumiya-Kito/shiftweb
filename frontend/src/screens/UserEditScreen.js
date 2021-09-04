@@ -6,6 +6,7 @@ import axios from 'axios'
 import { useLoginStore } from '../context'
 
 import FormContainer from '../components/FormContainer'
+import Message from '../components/Message'
 
 
 function UserEditScreen({ match, history }) {
@@ -67,11 +68,11 @@ function UserEditScreen({ match, history }) {
                 ＜ 戻る
             </Link>
             <FormContainer>
-                <h1>Edit User</h1>
+                <h1>ユーザー情報更新</h1>
     
                 <Form onSubmit={submitHandler}>
                     <Form.Group controlId='name'>
-                        <Form.Label>Name</Form.Label>
+                        <Form.Label>ユーザー名</Form.Label>
                         <Form.Control
                             type='name'
                             placeholder='Enter Name'
@@ -82,7 +83,7 @@ function UserEditScreen({ match, history }) {
                     </Form.Group>
 
                     <Form.Group controlId='email'>
-                        <Form.Label>Email Address</Form.Label>
+                        <Form.Label>メールアドレス（ログインID）</Form.Label>
                         <Form.Control
                             type='email'
                             placeholder='Enter Email'
@@ -93,7 +94,7 @@ function UserEditScreen({ match, history }) {
                     </Form.Group>
 
                     <Form.Group controlId='idAdmin'>
-                        <Form.Label>IsAdmin</Form.Label>
+                        <Form.Label>※管理者権限</Form.Label>
                         <Form.Check
                             type='checkbox'
                             placeholder='Is Admin'
@@ -105,10 +106,19 @@ function UserEditScreen({ match, history }) {
 
 
                     <Button type='submit' variant='primary'>
-                        Update
+                        更新
                     </Button>
                 </Form>
                 
+            </FormContainer>
+
+            <FormContainer>
+                <div className='mt-5'>
+                    <Message variant='info'>
+                        （※）管理者は、すべてのユーザー情報とシフト情報の閲覧・編集・削除が可能です。
+                        管理者権限の付与には注意してください。
+                    </Message>
+                </div>
             </FormContainer>
         </div>
     )
