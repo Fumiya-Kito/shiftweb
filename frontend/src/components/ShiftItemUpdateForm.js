@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import FormContainer from './FormContainer'
-import { Form, ButtonGroup, ToggleButton, Container } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Form, Container } from 'react-bootstrap'
 import  Loader from './Loader'
-import { useLoginStore, useProfileStore, useShiftDispatch, useShiftStore } from '../context'
+import { useProfileStore, useShiftDispatch } from '../context'
 
 import { TimePickerComponent } from '@syncfusion/ej2-react-calendars'
-import { addShiftItem, removeShiftItem, updateShiftItem } from '../actions/shiftActions'
-import { set, setISODay } from 'date-fns'
+import { addShiftItem, removeShiftItem} from '../actions/shiftActions'
 
 
 function ShiftItemUpdateForm({ shiftItem, date }) {
@@ -25,61 +21,37 @@ function ShiftItemUpdateForm({ shiftItem, date }) {
     const profileState = useProfileStore()
     const { profile } = profileState
 
-    
-    //checkbox
-    const radios = [
-        { name:'終日', value:true},
-        { name:'時間指定', value:false}
-    ]
-    
     const changeColor = (flag) => {
         if (flag) return 'dodgerblue'
         return ''
     }
     
     useEffect(() => {
-            
-            if (shiftItem && isDefault) {
-                setIsWork(shiftItem.is_work) 
-                setIsAllDay(shiftItem.is_all_day) 
-                setStartTime(String(shiftItem.start_time).substring(0,5))
-                setEndTime(String(shiftItem.end_time).substring(0, 5))
-                setIsDefault(false)
-            } else {
-                if (isAllDay) {
-                    setStartTime('07:00')
-                    setEndTime('23:30')
-                } else if(!startTime && !endTime) {
-                    setStartTime(profile.start_default.substring(0,5))
-                    setEndTime(profile.end_default.substring(0,5))
-                }
+        if (shiftItem && isDefault) {
+            setIsWork(shiftItem.is_work) 
+            setIsAllDay(shiftItem.is_all_day) 
+            setStartTime(String(shiftItem.start_time).substring(0,5))
+            setEndTime(String(shiftItem.end_time).substring(0, 5))
+            setIsDefault(false)
+        } else {
+            if (isAllDay) {
+                setStartTime('07:00')
+                setEndTime('23:30')
+            } else if(!startTime && !endTime) {
+                setStartTime(profile.start_default.substring(0,5))
+                setEndTime(profile.end_default.substring(0,5))
             }
+        }
+    
+        if (date && !isWork) {
+            removeShiftItem(shiftDispatch, date)
+        }
         
-            if (date && !isWork) {
-                removeShiftItem(shiftDispatch, date)
-            }
-            
-            if (isWork && date && startTime && endTime) {
-                addShiftItem(shiftDispatch, date, isWork, startTime, endTime, isAllDay)
-            }
-
-
-
-            // if (isAllDay) {
-            //     setStartTime('07:00')
-            //     setEndTime('23:30')
-            // }
-            // else {
-            //     // setDate(shiftItem.date)
-            //     setStartTime(String(shiftItem.start_time).substring(0,5))
-            //     setEndTime(String(shiftItem.end_time).substring(0,5))
-            //     setIsWork(shiftItem.is_work)
-            //     setIsAllDay(shiftItem.is_all_day)
-            // }
-            // console.log(shiftItem.is_work)
+        if (isWork && date && startTime && endTime) {
+            addShiftItem(shiftDispatch, date, isWork, startTime, endTime, isAllDay)
+        }
         
-        
-    }, [  isAllDay, isWork, date, startTime, endTime])
+    }, [ isAllDay, isWork, date, startTime, endTime, isDefault, profile, shiftItem, shiftDispatch])
     
 
         return (

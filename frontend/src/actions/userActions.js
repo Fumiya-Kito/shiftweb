@@ -9,8 +9,6 @@ import {
     USER_REGISTER_FAIL,
     USER_PROFILE_REQUEST,
     USER_PROFILE_SUCCESS,
-    USER_PROFILE_FAIL,
-    USER_PROFILE_RESET,
  } from '../constants/userConstants'
 
 

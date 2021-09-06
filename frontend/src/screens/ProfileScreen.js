@@ -31,6 +31,13 @@ function ProfileScreen({ history }) {
     }
 
     useEffect(() => {
+        //for iOS/Safari bfCache
+        window.addEventListener('popstate', (e) => {
+            if (history.action === 'POP') {
+                history.go(0)
+            }
+        })
+
         if (!userInfo) {
             history.push('/login')
         } else {
@@ -61,7 +68,7 @@ function ProfileScreen({ history }) {
             fetchShifts()
         }
         
-    }, [history, userInfo])
+    }, [history, userInfo, dispatch, shiftDispatch])
 
     return (
         <div>

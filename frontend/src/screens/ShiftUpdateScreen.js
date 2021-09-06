@@ -38,6 +38,7 @@ function ShiftUpdateScreen({ history, match }) {
     
     
     useEffect(() => {
+
         if (!userInfo) {
             history.push('/login')
         } else {
@@ -57,7 +58,7 @@ function ShiftUpdateScreen({ history, match }) {
                 setRemarks(data.remarks)
                 setMonth(takeMonth(new Date(String(data.period_start)))())
                 setLoading(false)
-                console.log(data)
+                
             }        
             fetchShift()
         }
@@ -67,25 +68,25 @@ function ShiftUpdateScreen({ history, match }) {
     
     const submitHandler = async(e) => {
         e.preventDefault()
-        if (window.confirm('このシフトを更新しますか?')) {
-            const config = {
-                headers: {
-                    'Content-type': 'application/json',
-                    Authorization : `Bearer ${userInfo.token}`
-                }
-            }
-        
     
-            const { data } = await axios.put(
-                `/api/shifts/shift-update/${shiftId}/`,
-               {
-                    'shiftItems': shiftItems,
-                    'remarks': remarks,
-                },
-                config
-            )
-            history.push('/profile')
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization : `Bearer ${userInfo.token}`
+            }
         }
+    
+
+        const { data } = await axios.put(
+            `/api/shifts/shift-update/${shiftId}/`,
+            {
+                'shiftItems': shiftItems,
+                'remarks': remarks,
+            },
+            config
+        )
+        history.push('/profile')
+        
     } 
 
     return (

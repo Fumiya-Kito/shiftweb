@@ -63,42 +63,39 @@ function ProfileUpdateScreen({history}) {
             setStartDefault(profile.start_default.substring(0,5))
             setEndDefault(profile.end_default.substring(0,5))
         }
-    }, [history, userInfo])
+    }, [history, userInfo, dispatch])
 
     const submitHandler = async(e) => {
         e.preventDefault()
-        console.log('submitted!')
-        console.log(name, duty, section, isRookie, isOpen, isPreClose, isClose, startDefault, endDefault, weeklyWork, workTime, commute, station)
-        if (window.confirm('プロフィールの更新をしますか？')) {
-            const config = {
-                headers: {
-                    'Content-type': 'application/json',
-                    Authorization: `Bearer ${userInfo.token}`
-                }
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`
             }
-    
-            const { data } = await axios.put(
-                `/api/users/update/profile/`,
-                {
-                    "name": name,
-                    "duty": duty,
-                    "employment": employment,
-                    "section": section,
-                    "isRookie": isRookie,
-                    "isOpen": isOpen,
-                    "isPreClose": isPreClose,
-                    "isClose": isClose,
-                    "startDefault": startDefault,
-                    "endDefault": endDefault,
-                    "weeklyTime": weeklyWork,
-                    "workTime": workTime,
-                    "commute": commute,
-                    "station": station
-                },
-                config
-            )
-            history.push('/profile')
         }
+    
+        const { data } = await axios.put(
+            `/api/users/update/profile/`,
+            {
+                "name": name,
+                "duty": duty,
+                "employment": employment,
+                "section": section,
+                "isRookie": isRookie,
+                "isOpen": isOpen,
+                "isPreClose": isPreClose,
+                "isClose": isClose,
+                "startDefault": startDefault,
+                "endDefault": endDefault,
+                "weeklyTime": weeklyWork,
+                "workTime": workTime,
+                "commute": commute,
+                "station": station
+            },
+            config
+        )
+        history.push('/profile')
     }
 
     return (

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Form, Container } from 'react-bootstrap'
 import  Loader from './Loader'
-import { useProfileStore, useShiftDispatch, useShiftStore } from '../context'
+import { useProfileStore, useShiftDispatch } from '../context'
 
 import { TimePickerComponent } from '@syncfusion/ej2-react-calendars'
-import { addShiftItem, removeShiftItem, updateShiftItem } from '../actions/shiftActions'
+import { addShiftItem, removeShiftItem } from '../actions/shiftActions'
 
 
 function ShiftItemForm({history, date}) {
@@ -18,14 +18,8 @@ function ShiftItemForm({history, date}) {
     //Global States
     const profileState = useProfileStore()
     const { profile } = profileState
-    const shiftState = useShiftStore()
     const shiftDispatch = useShiftDispatch()
     
-    //checkbox
-    const radios = [
-        { name:'終日', value:true},
-        { name:'時間指定', value:false}
-    ]
 
     const changeColor = (flag) => {
         if (flag) return 'dodgerblue'
@@ -54,7 +48,7 @@ function ShiftItemForm({history, date}) {
             addShiftItem(shiftDispatch, date, isWork, startTime, endTime, isAllDay)
         }
         
-    }, [history, isAllDay, isWork, date, startTime, endTime])
+    }, [history, isAllDay, isWork, date, startTime, endTime, profile, shiftDispatch])
 
 
         return (

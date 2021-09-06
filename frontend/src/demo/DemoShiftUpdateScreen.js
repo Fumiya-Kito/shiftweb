@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Row, Col, Card, Form, Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-import { useLoginStore, useShiftStore, useProfileStore} from '../context'
+import { useLoginStore, useShiftStore} from '../context'
 
 import { takeMonth } from '../constants/month'
 import  ShiftItemUpdateForm from '../components/ShiftItemUpdateForm'
@@ -58,35 +57,30 @@ function DemoShiftUpdateScreen({ history, match }) {
                 setRemarks(data.remarks)
                 setMonth(takeMonth(new Date(String(data.period_start)))())
                 setLoading(false)
-                console.log(data)
             }        
             fetchShift()
         }
 
         
-    }, [userInfo, history, match])
+    }, [userInfo, history, match, shiftId])
     
     const submitHandler = async(e) => {
         e.preventDefault()
-        if (window.confirm('このシフトを更新しますか?')) {
-            const config = {
-                headers: {
-                    'Content-type': 'application/json',
-                    Authorization : `Bearer ${userInfo.token}`
-                }
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization : `Bearer ${userInfo.token}`
             }
-        
-    
-            const { data } = await axios.put(
-                `/api/shifts/shift-update/${shiftId}/`,
-               {
-                    'shiftItems': shiftItems,
-                    'remarks': remarks,
-                },
-                config
-            )
-            history.push('/demo/profile')
         }
+        const { data } = await axios.put(
+            `/api/shifts/shift-update/${shiftId}/`,
+            {
+                'shiftItems': shiftItems,
+                'remarks': remarks,
+            },
+            config
+        )
+        history.push('/demo/profile')
     } 
 
     return (

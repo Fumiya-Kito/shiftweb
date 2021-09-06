@@ -33,6 +33,11 @@ function DemoProfileScreen({ history }) {
     }
 
     useEffect(() => {
+        window.addEventListener('popstate', (e) => {
+            if (history.action === 'POP') {
+                history.go(0)
+            }
+        })
         if (!userInfo) {
             const demoEmail = 'demo@email.com'
             const demoPassword = 'demo1234'
@@ -59,7 +64,7 @@ function DemoProfileScreen({ history }) {
             fetchShifts()
         }
         
-    }, [history, userInfo, isSubmitted, period])
+    }, [history, userInfo, isSubmitted, period, dispatch, loginDispatch, shiftDispatch])
 
 //handler functions
     const isSubmittedToTrue = () => {
@@ -248,7 +253,7 @@ function DemoProfileScreen({ history }) {
 
             </Row>
 
-            <h4>コントローラー</h4>
+            <h4>DEMO用コントローラー</h4>
 
             <Container className='border'>
                 <FormContainer>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Row, Col, Card } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
 import { useLoginStore } from '../context'
 
 import { takeMonth } from '../constants/month'
@@ -43,7 +42,7 @@ function DemoShiftConfirmScreen({ history, match }) {
             }
             fetchShift()
         }
-    }, [userInfo, history, match])
+    }, [userInfo, history, match, shiftId])
 
     return (
         <div>

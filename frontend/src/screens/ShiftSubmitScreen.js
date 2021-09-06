@@ -45,28 +45,28 @@ function ShiftSubmitScreen({ history }) {
     
     const submitHandler = async(e) => {
         e.preventDefault()
-        if (window.confirm('シフトを提出しますか?（提出期限後、MGRが受理するまでは更新可能です）')) {
-            const config = {
-                headers: {
-                    'Content-type': 'application/json',
-                    Authorization : `Bearer ${userInfo.token}`
-                }
-            }
     
-            const { data } = await axios.post(
-                `/api/shifts/shift/create/`,
-                {
-                    'shiftItems': shiftItems,
-                    'section': profile.section,
-                    'periodStart': getStringDate(period[0]),
-                    'periodEnd': getStringDate(period[1]),
-                    'remarks': remarks,
-                    'isSubmitted': true,
-                },
-                config
-            )
-            history.push('/profile')
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization : `Bearer ${userInfo.token}`
+            }
         }
+
+        const { data } = await axios.post(
+            `/api/shifts/shift/create/`,
+            {
+                'shiftItems': shiftItems,
+                'section': profile.section,
+                'periodStart': getStringDate(period[0]),
+                'periodEnd': getStringDate(period[1]),
+                'remarks': remarks,
+                'isSubmitted': true,
+            },
+            config
+        )
+        history.push('/profile')
+        
     } 
 
     return (

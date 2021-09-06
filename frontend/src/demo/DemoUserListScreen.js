@@ -4,8 +4,10 @@ import { Table, Button } from 'react-bootstrap'
 import axios from 'axios'
 import { useLoginStore } from '../context'
 import Loader from '../components/Loader'
+import Message from '../components/Message'
 
-function UserListScreen({ history }) {
+
+function DemoUserListScreen({ history }) {
     
     const [users, setUsers] = useState([])
     const [successDelete, setSuccessDelete] = useState(false)
@@ -21,7 +23,7 @@ function UserListScreen({ history }) {
             }
         })
         
-        if (userInfo && userInfo.isAdmin) {
+        if (userInfo && userInfo.email === 'demo@email.com') {
             const config = {
                 headers: {
                     'Content-type': 'application/json',
@@ -42,23 +44,8 @@ function UserListScreen({ history }) {
         }
     }, [history, userInfo, successDelete])
 
-    const deleteHandler = (id) => {
-        if (window.confirm(`このユーザー（ID=${id}）を削除してよろしいですか？`)) {
-            const config = {
-                headers: {
-                    'Content-type': 'application/json',
-                    Authorization : `Bearer ${userInfo.token}`
-                }
-            }
-            async function fetchDeleteUser() { 
-                const { data } = await axios.delete(
-                    `/api/users/admin/deleteuser/${id}/`,
-                    config
-                )
-                setSuccessDelete(true)
-            }
-            fetchDeleteUser()
-        }
+    const deleteHandler = () => {
+
     }
 
     return (
@@ -81,7 +68,7 @@ function UserListScreen({ history }) {
                             <tr key={user._id}>
                                 <td>{user._id}</td>
                                 <td>{user.name}</td>
-                                <td>{user.email}</td>                                
+                                <td>***</td>                                
                                 <td>{user.isAdmin ? (
                                     <i className='fas fa-check' ></i>
                                 ) : (
@@ -95,7 +82,7 @@ function UserListScreen({ history }) {
                                         </Button>
                                     </LinkContainer>
 
-                                    <Button  className='btn-sm mx-2' onClick={() => deleteHandler(user._id)}>
+                                    <Button  className='btn-sm mx-2'>
                                         <i className='fas fa-trash'></i>
                                     </Button>
                                 </td>
@@ -104,8 +91,13 @@ function UserListScreen({ history }) {
                     </tbody>
                 </Table>
             }
+            <div className='mt-5'>
+                <Message variant='danger'>
+                    Demoユーザーでは、emailの参照/ユーザーの編集・削除は不可能。機能の閲覧のみできます。（管理者権限なし）
+                </Message>
+            </div>
         </div>
     )
 }
 
-export default UserListScreen
+export default DemoUserListScreen

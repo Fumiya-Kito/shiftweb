@@ -31,7 +31,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 # Create your views here.
 
 @api_view(['GET'])
-@permission_classes([IsAdminUser])
+@permission_classes([IsAuthenticated]) #forDemo
 def getUsers(request):
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
@@ -45,7 +45,7 @@ def getUser(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-@permission_classes([IsAdminUser])
+@permission_classes([IsAuthenticated]) #forDemo
 def getUserById(request, pk):
     user = User.objects.get(id=pk)
     serializer = UserSerializer(user, many=False)

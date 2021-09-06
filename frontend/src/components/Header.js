@@ -65,6 +65,22 @@ function Header() {
                             </NavDropdown>
                         )}
 
+                        {userInfo &&
+                            <>
+                            {userInfo.email === 'demo@email.com' &&
+                                <NavDropdown title='管理者権限' id='adminmenu'>
+                                    <LinkContainer to='/demo/admin/userlist'>
+                                        <NavDropdown.Item>ユーザー管理</NavDropdown.Item>
+                                    </LinkContainer>
+
+                                    <LinkContainer to='/demo/admin/shiftlist'>
+                                        <NavDropdown.Item>シフト管理</NavDropdown.Item>
+                                    </LinkContainer>
+                                </NavDropdown>
+                            }
+                            </>
+                        }
+
                         </Nav>
                 
                 </Container>

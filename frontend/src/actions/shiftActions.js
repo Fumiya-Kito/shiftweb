@@ -3,7 +3,6 @@ import {
     SHIFT_REMOVE_ITEM,
     SHIFT_CHANGE_STATUS,
     SHIFT_CHANGE_PERIOD,
-    SHIFT_RESET,
 } from '../constants/shiftConstants'
 
 
