@@ -5,6 +5,7 @@ import { useLoginStore, useShiftStore, useProfileStore} from '../context'
 
 import { takeMonth } from '../constants/month'
 import  ShiftItemForm  from '../components/ShiftItemForm'
+import Loader from '../components/Loader'
 
 
 import BackToDemoProfile from '../components/BackToDemoProfile'
@@ -21,6 +22,7 @@ function DemoShiftSubmitScreen({ history }) {
 
     //Local States
     const [remarks, setRemarks] = useState('')
+    const [submitLoading, setSubmitLoading] = useState(false)
 
     //for Calender
     const days = ["日", "月", "火", "水", "木", "金", "土"]
@@ -42,6 +44,7 @@ function DemoShiftSubmitScreen({ history }) {
     
     const submitHandler = async(e) => {
         e.preventDefault()
+        setSubmitLoading(true)
         const config = {
             headers: {
                 'Content-type': 'application/json',
@@ -113,10 +116,12 @@ function DemoShiftSubmitScreen({ history }) {
                                     </Form.Control>
                                 </Form.Group>
                             </Col>
-                            <Col md={4}　className='d-grid gap-2 mt-4'>
-                                <Button type='submit' variant='primary' size='lg'>
-                                    提出
-                                </Button>
+                            <Col md={4} className='d-grid gap-2 mt-4'>
+                                {submitLoading ? <Loader /> : 
+                                    <Button type='submit' variant='primary' size='lg'>
+                                        提出
+                                    </Button>
+                                }
                             </Col>
                         </Row>
                 </Form>

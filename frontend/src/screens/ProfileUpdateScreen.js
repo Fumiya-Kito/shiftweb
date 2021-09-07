@@ -26,7 +26,7 @@ function ProfileUpdateScreen({history}) {
     const [workTime, setWorkTime] = useState('')
     const [commute, setCommute] = useState('')
     const [station, setStation] = useState('')
-    const [loading, setLoading] = useState(true)
+    const [submitLoading, setSubmitLoading] = useState(false)
 
     //global states
     const loginState = useLoginStore()
@@ -55,8 +55,6 @@ function ProfileUpdateScreen({history}) {
             profile.desired_working_time ? setWorkTime(profile.desired_working_time) : setWorkTime(0)
             profile.commute ? setCommute(profile.commute) : setCommute('')
             profile.station ? setStation(profile.station) : setStation('')
-
-            setLoading(false)
         }
 
         if(!startDefault && !endDefault) {
@@ -67,7 +65,7 @@ function ProfileUpdateScreen({history}) {
 
     const submitHandler = async(e) => {
         e.preventDefault()
-
+        setSubmitLoading(true)
         const config = {
             headers: {
                 'Content-type': 'application/json',
@@ -103,7 +101,7 @@ function ProfileUpdateScreen({history}) {
             <Link to='/profile' className='btn my-2' style={{ background: '#999999'}}>
                 ＜ 戻る
             </Link>
-            {loading ? <Loader/> :
+            
             <FormContainer>
                 <Form onSubmit={submitHandler} className='border p-3'>
                     <Form.Group controlId='name'>
@@ -318,13 +316,14 @@ function ProfileUpdateScreen({history}) {
                         ></Form.Control>
                     </Form.Group>
 
-                    <Button type='submit' variant='primary' size='lg' className='mt-4'>
-                        更新
-                    </Button>
+                    {submitLoading ? <Loader /> : 
+                        <Button type='submit' variant='primary' size='lg' className='mt-4'>
+                            更新
+                        </Button>
+                    }
 
                 </Form>
             </FormContainer>
-            }
         </>
     )
 }

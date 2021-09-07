@@ -24,6 +24,7 @@ function ShiftUpdateScreen({ history, match }) {
     const [remarks, setRemarks] = useState([])
     const [month, setMonth] = useState([])
     const [loading, setLoading] = useState(true)
+    const [submitLoading, setSubmitLoading] = useState(false)
 
 
     //for Calender
@@ -68,14 +69,13 @@ function ShiftUpdateScreen({ history, match }) {
     
     const submitHandler = async(e) => {
         e.preventDefault()
-    
+        setSubmitLoading(true)
         const config = {
             headers: {
                 'Content-type': 'application/json',
                 Authorization : `Bearer ${userInfo.token}`
             }
         }
-    
 
         const { data } = await axios.put(
             `/api/shifts/shift-update/${shiftId}/`,
@@ -145,10 +145,12 @@ function ShiftUpdateScreen({ history, match }) {
                                     </Form.Control>
                                 </Form.Group>
                             </Col>
-                            <Col md={4}　className='d-grid gap-2 mt-4'>
-                                <Button type='submit' variant='primary' size='lg'>
-                                    提出
-                                </Button>
+                            <Col md={4} className='d-grid gap-2 mt-4'>
+                                {submitLoading ? <Loader /> :
+                                    <Button type='submit' variant='primary' size='lg'>
+                                        提出
+                                    </Button>
+                                }
                             </Col>
                         </Row>
 
