@@ -16,19 +16,18 @@ from rest_framework import status
 
 
 #views
+
 # @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# def getMyShift(request, pk):
-#     user = request.user
-#     shift = user.shift_set.get(_id=pk)
-#     shiftItems = shift.shiftitem_set.all()
-#     serializer = ShiftItemSerializer(shiftItems, many=True)
+# @permission_classes([IsAdminUser])
+# def getAllShifts(request):
+#     shifts = Shift.objects.all()
+#     serializer = ShiftSerializer(shifts, many=True)
 #     return Response(serializer.data)
 
 @api_view(['GET'])
-@permission_classes([IsAdminUser])
+@permission_classes([IsAuthenticated])
 def getAllShifts(request):
-    shifts = Shift.objects.all()
+    shifts = Shift.objects.order_by('section', 'period_start', 'user')
     serializer = ShiftSerializer(shifts, many=True)
     return Response(serializer.data)
 
@@ -164,3 +163,12 @@ def updateShiftItems(request, pk):
 
     return Response('Update shiftItems')
 
+
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def getMyShift(request, pk):
+#     user = request.user
+#     shift = user.shift_set.get(_id=pk)
+#     shiftItems = shift.shiftitem_set.all()
+#     serializer = ShiftItemSerializer(shiftItems, many=True)
+#     return Response(serializer.data)

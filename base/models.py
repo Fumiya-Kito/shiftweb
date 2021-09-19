@@ -35,7 +35,7 @@ class Shift(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
-        return str(self._id) + ': ' + str(self.user.first_name) + '/ ' + str(self.period_start) + '~' + str(self.period_end)
+        return str(self._id) + ': ' + str(self.user) + '/ ' + str(self.period_start) + '~' + str(self.period_end)
 
 class ShiftItem(models.Model):
     shift = models.ForeignKey(Shift, on_delete=models.CASCADE, null=True, blank=True)
@@ -48,4 +48,4 @@ class ShiftItem(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
     
     def __str__(self):
-        return str(self._id) + str(self.shift.user.first_name) + ': ' + str(self.date)
+        return str(self._id) + ': ' + str(self.shift.user) + ': ' + str(self.date)
