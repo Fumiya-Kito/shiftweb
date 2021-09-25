@@ -13,6 +13,7 @@ def createProfile(sender, instance, created, **kwargs):
             name=instance.first_name
         )
 
+#login ID -> email
 @receiver(pre_save, sender=User)
 def updateUser(sender, instance, **kwargs):
     user = instance

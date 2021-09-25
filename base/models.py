@@ -25,7 +25,8 @@ class Profile(models.Model):
         return str(self.user)
 
 class Shift(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user_name = models.CharField(max_length=50, null=True, blank=True)
     section = models.CharField(max_length=50, null=True, blank=True)
     period_start = models.DateField(auto_now_add=False)
     period_end = models.DateField(auto_now_add=False)
@@ -35,7 +36,8 @@ class Shift(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
-        return str(self._id) + ': ' + str(self.user) + '/ ' + str(self.period_start) + '~' + str(self.period_end)
+        return str(self._id) + ': ' + str(self.user.first_name) + '/ ' + str(self.period_start) + '~' + str(self.period_end)
+
 
 class ShiftItem(models.Model):
     shift = models.ForeignKey(Shift, on_delete=models.CASCADE, null=True, blank=True)
@@ -48,4 +50,4 @@ class ShiftItem(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
     
     def __str__(self):
-        return str(self._id) + ': ' + str(self.shift.user) + ': ' + str(self.date)
+        return str(self._id) + ': ' + str(self.shift.user.first_name) + ': ' + str(self.date)

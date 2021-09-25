@@ -73,8 +73,7 @@ function ProfileScreen({ history }) {
     return (
         <div>
             <h1>ようこそ {profile.name} さん</h1>
-            <Row className='py-3'>
-                
+            <Row className='py-3'> 
 
                 {loading ? <Loader />
                     :

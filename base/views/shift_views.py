@@ -27,7 +27,14 @@ from rest_framework import status
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getAllShifts(request):
-    shifts = Shift.objects.order_by('section', 'period_start', 'user')
+    query_section = request.query_params.get('section')
+    query_period = request.query_params.get('period')
+    if query_section == None:
+        query_section = ''
+    if query_period == None:
+        query_period = ''
+    # shifts = Shift.objects.order_by('section', 'period_start', 'user')
+    shifts = Shift.objects.filter(section__icontains=query_section, period_start__icontains=query_period).order_by('user')
     serializer = ShiftSerializer(shifts, many=True)
     return Response(serializer.data)
 
@@ -84,6 +91,7 @@ def addShiftItems(request):
     #1. create shift model
     shift = Shift.objects.create(
         user=user,
+        user_name=user.first_name,
         section=data['section'],
         period_start=data['periodStart'],
         period_end=data['periodEnd'],

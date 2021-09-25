@@ -17,7 +17,7 @@ import { startOfMonth, endOfMonth, subDays, addMonths, endOfDay } from 'date-fns
 export const shiftInitialState = {
     shiftItems: [],
     isSubmitted: false,
-    loading: false,
+    loading: true,
     period: [
         endOfDay(startOfMonth(addMonths(new Date(), 1))),
         endOfDay(endOfMonth(addMonths(new Date(), 1)))

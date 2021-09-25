@@ -59,7 +59,7 @@ function App() {
                 <Route path='/demo/shift/submit' component={DemoSubmitScreen} />
                 <Route path='/demo/shifts/update/:id' component={DemoShiftUpdateScreen} />
                 <Route path='/demo/shifts/confirm/:id' component={DemoShiftConfirmScreen} />
-                <Route path='/demo/admin/userlist/' component={DemoUserListScreen} />
+                <Route path='/demo/admin/userlist' component={DemoUserListScreen} />
                 <Route path='/demo/admin/user/:id/edit' component={DemoUserEditScreen} />
                 <Route path='/demo/admin/shiftlist' component={DemoShiftListScreen} /> 
 
