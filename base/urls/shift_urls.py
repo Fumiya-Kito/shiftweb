@@ -11,5 +11,6 @@ urlpatterns = [
     path('shiftitem-update/<str:pk>/', views.updateShiftItem, name="shiftitem-update"),
     path('shift-update/<str:pk>/', views.updateShiftItems, name="shift-update"),
     path('shift/create/', views.addShiftItems, name="shift-create"),
+    path('confirmed-update/<str:pk>/', views.updateIsConfirmed, name="isConfirm-update"),
     # path('shift/update/<str:pk>/', views.updateShiftItems, name="shift-update"),
 ]

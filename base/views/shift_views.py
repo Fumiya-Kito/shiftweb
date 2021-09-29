@@ -172,11 +172,10 @@ def updateShiftItems(request, pk):
     return Response('Update shiftItems')
 
 
-# @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# def getMyShift(request, pk):
-#     user = request.user
-#     shift = user.shift_set.get(_id=pk)
-#     shiftItems = shift.shiftitem_set.all()
-#     serializer = ShiftItemSerializer(shiftItems, many=True)
-#     return Response(serializer.data)
+@api_view(['PUT'])
+# @permission_classes([IsAdminUser])
+def updateIsConfirmed(request, pk):
+    shift = Shift.objects.get(_id=pk)
+    shift.is_confirmed = not shift.is_confirmed
+    shift.save()
+    return Response('Update isConfirmed')

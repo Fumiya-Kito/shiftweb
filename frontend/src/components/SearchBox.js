@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { Button, Form, Row, Col } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
+import Loader from '../components/Loader'
 
 
 function SearchBox() {
@@ -31,7 +32,7 @@ function SearchBox() {
     return (
         <Form onSubmit={submitHandler} inline className='mb-5'>
             <Row>
-                <Col xs={12} sm={8} md={4} lg={3} xl={2} className='mb-2'>
+                <Col xs={12} sm={4} md={4} lg={4} xl={4} className='mb-2'>
                     <Form.Group controlId='section'>
                         <Form.Control
                             required
@@ -49,7 +50,7 @@ function SearchBox() {
                         </Form.Control>
                     </Form.Group>
                 </Col>
-                <Col xs={12} sm={8} md={4} lg={3} xl={2} className='mb-2'>
+                <Col xs={12} sm={4} md={4} lg={4} xl={4} className='mb-2'>
                     <Form.Group controlId='period'>
                         {/* <Form.Label className='mb-0'>期間</Form.Label> */}
                         <Form.Control
@@ -65,14 +66,25 @@ function SearchBox() {
                         </Form.Control>
                     </Form.Group>
                 </Col>
-                <Col xs={6} sm={6} md={4} lg={3} xl={2}>
-                    <Button
-                        type='submit'
-                        variant='outline-success'
-                        className='px-2'
-                    >
-                        検索
-                    </Button>
+                <Col xs={6} sm={4} md={4} lg={4} xl={2}>
+                    {section && period ?                       
+                        <Button
+                            type='submit'
+                            variant='outline-success'
+                            className='px-2'
+                        >
+                            検索
+                        </Button>
+                        :
+                        <Button
+                            disabled
+                            type='submit'
+                            variant='outline-secondary'
+                            className='px-2'
+                        >
+                            検索
+                        </Button>
+                    }
                 </Col>
             </Row>
 

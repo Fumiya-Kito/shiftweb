@@ -35,8 +35,12 @@ class UserSerializerWithToken(UserSerializer):
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
-
-
+        
+    def validate_password(self,value:str) ->str:
+        """
+        ハッシュ値に変換する
+        """
+        return make_password(value)
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:

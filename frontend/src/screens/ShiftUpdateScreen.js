@@ -59,7 +59,7 @@ function ShiftUpdateScreen({ history, match }) {
                 setRemarks(data.remarks)
                 setMonth(takeMonth(new Date(String(data.period_start)))())
                 setLoading(false)
-                
+                console.log(data)
             }        
             fetchShift()
         }
@@ -85,14 +85,23 @@ function ShiftUpdateScreen({ history, match }) {
             },
             config
         )
-        history.push('/profile')
+        if (userInfo.isAdmin) {
+            history.push(`/admin/shiftlist?section=${shift.section}&period=${shift.period_start.substring(0,7)}`)
+        } else {
+            history.push('/profile')
+        }
         
     } 
 
     return (
         <div>
-            <Link to='/profile' className='btn my-2' style={{ background: '#999999'}}>
-                ＜ 戻る
+            {userInfo.isAdmin && !loading &&
+                <Link to={`/admin/shiftlist?section=${shift.section}&period=${shift.period_start.substring(0,7)}`} className='btn m-2' style={{ background: '#999999'}}>
+                ＜ シフト一覧に戻る（{shift.section}/{shift.period_start.substring(0,7)}）
+                </Link>
+            }
+            <Link to='/profile' className='btn m-2' style={{ background: '#999999'}}>
+                ＜ ホームに戻る
             </Link>
             <h1 className='p-4'>シフト更新</h1>
             
@@ -148,7 +157,7 @@ function ShiftUpdateScreen({ history, match }) {
                             <Col md={4} className='d-grid gap-2 mt-4'>
                                 {submitLoading ? <Loader /> :
                                     <Button type='submit' variant='primary' size='lg'>
-                                        提出
+                                        更新
                                     </Button>
                                 }
                             </Col>

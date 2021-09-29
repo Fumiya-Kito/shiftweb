@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button } from 'react-bootstrap'
+import { Table, Button, Row, Col } from 'react-bootstrap'
+import axios from 'axios'
 
 import { useLoginStore } from '../context'
 import { takeMonth } from '../constants/month'
 
-import axios from 'axios'
 
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-
 import SearchBox from '../components/SearchBox'
 
 function ShiftListScreen({ history }) {
@@ -20,17 +19,16 @@ function ShiftListScreen({ history }) {
     const [shifts, setShifts] = useState([])
     const [month, setMonth] = useState([])
 
+    const [successUpdate, setSuccessUpdate] = useState(false)
+    const [loading, setLoading] = useState(true)
+
+
     // const month = takeMonth(new Date())()
     const getStringDate = (dt = new Date()) => {
         return dt.getFullYear() + '-' + ('0'+(dt.getMonth()+1)).slice(-2) + '-' + ('0'+dt.getDate()).slice(-2)
     }
 
-
     let keyword = history.location.search
-
-    const checkHandler = (e) => {
-        e.preventDefault()
-    }
 
     useEffect(() => {
         if (userInfo && userInfo.isAdmin) {
@@ -43,6 +41,7 @@ function ShiftListScreen({ history }) {
             }
 
             async function fetchShifts() {
+                setLoading(true)
                 const { data } = await axios.get(
                     `/api/shifts/admin/shifts${keyword}`,
                     config
@@ -56,24 +55,54 @@ function ShiftListScreen({ history }) {
                 } else {
                     setMonth(takeMonth(new Date(history.location.search.split('period=')[1]))())
                 }
+                setLoading(false)
             }
             fetchShifts()
-
         } else {
             history.push('/login')
         }
-    }, [history, userInfo, keyword])
+    }, [history, userInfo, keyword, successUpdate])
+
+
+    const checkHandler = (id) => {
+        const config= {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization : `Bearer ${userInfo.token}`
+            }
+        }
+        async function fetchUpdateIsConfirmed() { 
+            const { data } = await axios.put(
+                `/api/shifts/confirmed-update/${id}/`,
+                config
+            )
+            setSuccessUpdate(!successUpdate)
+        }
+        fetchUpdateIsConfirmed()
+    }
     
     return (
-        <div>
+        <>
             <h1>Shifts</h1>
-            <SearchBox/>
+            <Row>
+                <Col lg={8} md={8} sm={8} className='pt-2'>
+                    <SearchBox/>
+                </Col>
+                <Col lg={4} md={4} sm={4}>
+                    {!keyword && <Message variant='primary'>全シフト表示中（セクション＆期間を選択）</Message>}
+                    
+                    {loading ? <Loader /> :
+                        shifts.length === 0 && <Message variant='info'>シフトが存在しません</Message> 
+                    }
+                </Col>
+            </Row>
 
-            {!keyword && <Message variant='primary'>全シフト表示中（セクション＆期間を選択）</Message>}
+            
             <Table striped hover responsive className='table-sm border text-center align-middle' bordered>
                 <thead>
                     <tr>
                         <th>USER</th>
+                        <th className='bg-dark'></th>
                         {month.map((week, i) => (
                             <React.Fragment key={i}>
                                 {week.map((date, j) => (
@@ -96,7 +125,7 @@ function ShiftListScreen({ history }) {
                     {shifts.map((shift) => (
                         <tr key={shift._id}>
                             <td>{shift.user_name ? (shift.user_name) : 'ー'}</td>
-
+                            <td className='bg-dark'></td>
                             {month.map((week, i) => (
                                 <React.Fragment key={i}>
                                     {week.map((date, j) => (
@@ -148,9 +177,8 @@ function ShiftListScreen({ history }) {
                     ))}
                 </tbody>
             </Table>
-
-            {shifts.length === 0 && <Message variant='info'>シフトが存在しません</Message>}
-        </div>
+            
+        </>
     )
 }
 
