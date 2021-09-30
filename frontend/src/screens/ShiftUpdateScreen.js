@@ -95,10 +95,13 @@ function ShiftUpdateScreen({ history, match }) {
 
     return (
         <div>
-            {userInfo.isAdmin && !loading &&
+            {userInfo ?
+                !loading && userInfo.isAdmin &&
                 <Link to={`/admin/shiftlist?section=${shift.section}&period=${shift.period_start.substring(0,7)}`} className='btn m-2' style={{ background: '#999999'}}>
                 ＜ シフト一覧に戻る（{shift.section}/{shift.period_start.substring(0,7)}）
                 </Link>
+                :
+                <></>
             }
             <Link to='/profile' className='btn m-2' style={{ background: '#999999'}}>
                 ＜ ホームに戻る

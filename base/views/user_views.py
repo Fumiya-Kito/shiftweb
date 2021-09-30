@@ -33,7 +33,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated]) #forDemo
 def getUsers(request):
-    users = User.objects.all()
+    users = User.objects.order_by('id')
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
 

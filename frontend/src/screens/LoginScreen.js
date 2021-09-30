@@ -14,7 +14,7 @@ function LoginScreen({history, location}) {
     // const [state, dispatch] = useUserLoginReducer()
     const state = useLoginStore()
     const dispatch = useLoginDispatch()
-    const {userInfo, error} = state
+    const {userInfo, error, loading} = state
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -40,37 +40,40 @@ function LoginScreen({history, location}) {
                 
                 {error && <Message variant='danger'>'メールアドレスかパスワードが間違っています'</Message>}
                 
-                <Form onSubmit={submitHandler}>
-                    <Form.Group controlId='email'>
-                        <Form.Label className='mb-0'>メールアドレス</Form.Label>
-                        <Form.Control
-                            type='email'
-                            placeholder='eメールアドレスを入力'
-                            value={email}
-                            onChange={
-                                (e) => setEmail(e.target.value) 
-                            }
-                        ></Form.Control>
-                    </Form.Group>
+                {loading ? <Loader /> :
+                    <>
+                        <Form onSubmit={submitHandler}>
+                            <Form.Group controlId='email'>
+                                <Form.Label className='mb-0'>メールアドレス</Form.Label>
+                                <Form.Control
+                                    type='email'
+                                    placeholder='eメールアドレスを入力'
+                                    value={email}
+                                    onChange={
+                                        (e) => setEmail(e.target.value) 
+                                    }
+                                ></Form.Control>
+                            </Form.Group>
 
 
-                    <Form.Group controlId='password'>
-                        <Form.Label className='mb-0 mt-3'>パスワード</Form.Label>
-                        <Form.Control
-                            type='password'
-                            placeholder='パスワードを入力'
-                            value={password}
-                            onChange={
-                                (e) => setPassword(e.target.value)
-                            }
-                        ></Form.Control>
-                    </Form.Group>
-
-                    <Button type='submit' variant='primary' className='mt-2 mb-3'>
-                        ログイン
-                    </Button>
-
-                </Form>
+                            <Form.Group controlId='password'>
+                                <Form.Label className='mb-0 mt-3'>パスワード</Form.Label>
+                                <Form.Control
+                                    type='password'
+                                    placeholder='パスワードを入力'
+                                    value={password}
+                                    onChange={
+                                        (e) => setPassword(e.target.value)
+                                    }
+                                ></Form.Control>
+                            </Form.Group>
+                            
+                            <Button type='submit' variant='primary' className='mt-2 mb-3'>
+                                ログイン
+                            </Button>
+                        </Form>
+                    </>
+                }
 
                 <Row className="py-3">
                     <Col>

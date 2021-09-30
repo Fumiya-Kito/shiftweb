@@ -4,11 +4,13 @@ import { Table, Button } from 'react-bootstrap'
 import axios from 'axios'
 import { useLoginStore } from '../context'
 import Loader from '../components/Loader'
+import { set } from 'date-fns'
 
 function UserListScreen({ history }) {
     
     const [users, setUsers] = useState([])
     const [successDelete, setSuccessDelete] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     const loginState = useLoginStore()
     const {userInfo} = loginState
@@ -22,6 +24,7 @@ function UserListScreen({ history }) {
         })
         
         if (userInfo && userInfo.isAdmin) {
+            setLoading(true)
             const config = {
                 headers: {
                     'Content-type': 'application/json',
@@ -35,6 +38,7 @@ function UserListScreen({ history }) {
                 )
                 setUsers(data)
                 setSuccessDelete(false)
+                setLoading(false)
             }
             fetchUsers()
         } else {
@@ -64,7 +68,7 @@ function UserListScreen({ history }) {
     return (
         <div>
             <h1>ユーザー管理</h1>
-            {!users ? <Loader /> :
+            {loading ? <Loader /> :
                 <Table striped bordered hover responsive className='table-sm'>
                     <thead>
                         <tr>

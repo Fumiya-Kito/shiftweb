@@ -11,6 +11,8 @@ function DemoUserListScreen({ history }) {
     
     const [users, setUsers] = useState([])
     const [successDelete, setSuccessDelete] = useState(false)
+    const [loading, setLoading] = useState(true)
+
 
     const loginState = useLoginStore()
     const {userInfo} = loginState
@@ -30,13 +32,15 @@ function DemoUserListScreen({ history }) {
                     Authorization : `Bearer ${userInfo.token}`
                 }
             }
-            async function fetchUsers() { 
+            async function fetchUsers() {
+                setLoading(true)
                 const { data } = await axios.get(
                     `/api/users/admin/getusers/`,
                     config
                 )
                 setUsers(data)
                 setSuccessDelete(false)
+                setLoading(false)
             }
             fetchUsers()
         } else {
@@ -44,14 +48,10 @@ function DemoUserListScreen({ history }) {
         }
     }, [history, userInfo, successDelete])
 
-    const deleteHandler = () => {
-
-    }
-
     return (
         <div>
             <h1>ユーザー管理</h1>
-            {!users ? <Loader /> :
+            {loading ? <Loader /> :
                 <Table striped bordered hover responsive className='table-sm'>
                     <thead>
                         <tr>
@@ -82,7 +82,7 @@ function DemoUserListScreen({ history }) {
                                         </Button>
                                     </LinkContainer>
 
-                                    <Button  className='btn-sm mx-2'>
+                                    <Button className='btn-sm mx-2' disabled>
                                         <i className='fas fa-trash'></i>
                                     </Button>
                                 </td>

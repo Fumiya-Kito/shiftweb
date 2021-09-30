@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { Button, Form, Row, Col } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
-import Loader from '../components/Loader'
+import {useLoginStore} from '../context'
 
 
 function SearchBox() {
@@ -10,6 +10,9 @@ function SearchBox() {
     }
     const [section, setSection] = useState('')
     const [period, setPeriod] = useState(getStringMonth(new Date(), 0))
+
+    const loginState = useLoginStore()
+    const { userInfo } = loginState
     
     let history = useHistory()
 
@@ -23,7 +26,11 @@ function SearchBox() {
     const submitHandler = (e) => {
         e.preventDefault()
         if (section && period) {
-            history.push(`/admin/shiftlist/?section=${section}&period=${period}`)
+            if (userInfo.email === 'demo@email.com') {
+                history.push(`/demo/admin/shiftlist/?section=${section}&period=${period}`)
+            } else {
+                history.push(`/admin/shiftlist/?section=${section}&period=${period}`)
+            }
         } else {
             history.push(history.location.pathname)
         }

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import { Row, Col, Card } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { useLoginStore } from '../context'
+import { format } from 'date-fns'
+import axios from 'axios'
 
+import { useLoginStore } from '../context'
 import { takeMonth } from '../constants/month'
-import {format} from 'date-fns'
+import Loader from '../components/Loader'
 
 // import  useMediaQuery  from 'react-response'
 
@@ -15,6 +16,7 @@ function ShiftConfirmScreen({ history, match }) {
     //for API
     const shiftId = match.params.id
     const [shift, setShift] = useState([])
+    const [loading, setLoading] = useState(true)
 
     const loginState = useLoginStore()
     const { userInfo } = loginState
@@ -34,12 +36,14 @@ function ShiftConfirmScreen({ history, match }) {
                     Authorization : `Bearer ${userInfo.token}`
                 }
             }
-            async function fetchShift() { 
+            async function fetchShift() {
+                setLoading(true)
                 const { data } = await axios.get(
                     `/api/shifts/confirm/${shiftId}/`,
                     config
                 )
                 setShift(data)
+                setLoading(false)
             }
             fetchShift()
         }
@@ -51,11 +55,11 @@ function ShiftConfirmScreen({ history, match }) {
                 ＜ 戻る
             </Link>
             <h1 className='p-4'>シフト確認</h1>
-            {shift.shiftItems &&
+            {loading ? <Loader/> :
             <div className='text-center'> 
                 <h4 style={{borderBottom:'1px solid', display:'inline-block'}}>{ month[0][6].getFullYear()}/{month[0][6].getMonth() + 1}</h4>
                 
-                <div>
+                <>
                     <Row className='text-center my-4' >
                         {month.map((week) => (
                             <React.Fragment key={week}>
@@ -88,7 +92,7 @@ function ShiftConfirmScreen({ history, match }) {
                         </React.Fragment>
                     ))}
                     </Row>
-                </div>
+                </>
             </div>
             }
         </div>
