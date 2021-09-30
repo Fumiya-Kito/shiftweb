@@ -25,7 +25,7 @@ from rest_framework import status
 #     return Response(serializer.data)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def getAllShifts(request):
     query_section = request.query_params.get('section')
     query_period = request.query_params.get('period')
@@ -33,7 +33,7 @@ def getAllShifts(request):
         query_section = ''
     if query_period == None:
         query_period = ''
-    # shifts = Shift.objects.order_by('section', 'period_start', 'user')
+
     shifts = Shift.objects.filter(section__icontains=query_section, period_start__icontains=query_period).order_by('user')
     serializer = ShiftSerializer(shifts, many=True)
     return Response(serializer.data)
