@@ -19,7 +19,7 @@ const profileFromStrage = localStorage.getItem('profile') ?
 export const loginInitialState = {
     userInfo: userInfoFromStrage,
     error: false,
-    loading: true
+    loading: false
 }
 export const profileInitialState = {
     profile: profileFromStrage,
@@ -37,7 +37,7 @@ export const userLoginReducer = (state, action) => {
         case USER_LOGIN_FAIL:
             return { loading: false, error: true}
         case USER_LOGOUT:
-            return { userInfo: null}
+            return { loading: false, userInfo: null }
         default:
             return state
     }

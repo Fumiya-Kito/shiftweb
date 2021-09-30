@@ -46,11 +46,10 @@ export const login = async (email, password, dispatch) => {
 
 
 
-export const logout = (loginDispatch, profileDispatch) => {
+export const logout = (loginDispatch) => {
     localStorage.removeItem('userInfo')
     localStorage.removeItem('profile')
     loginDispatch({ type: USER_LOGOUT })
-    // profileDispatch({ type: USER_PROFILE_RESET }) 
 }
 
 
