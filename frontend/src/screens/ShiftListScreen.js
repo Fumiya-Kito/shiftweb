@@ -90,10 +90,10 @@ function ShiftListScreen({ history }) {
                 <Col lg={6} md={6} sm={8} xs={8} className='pt-2'>
                     <SearchBox/>
                 </Col>
-                <Col lg={3} md={3} sm={12}>
+                <Col lg={4} md={4} sm={12}>
                     {!keyword && <Message variant='primary'>全シフト表示中（セクション＆期間を選択）</Message>}
                 </Col>
-                <Col lg={3} md={3} sm={12}>
+                <Col lg={2} md={2} sm={12}>
                     {loading ? <Loader /> :
                         shifts.length === 0 && <Message variant='info'>シフトが存在しません</Message> 
                     }
