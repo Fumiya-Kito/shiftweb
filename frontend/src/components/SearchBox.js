@@ -49,6 +49,8 @@ function SearchBox() {
                             style={{cursor: 'pointer'}}
                         >
                             <option value={'フロント'}>フロント</option>
+                            <option value={'キッチン'}>キッチン</option>
+                            <option value={'ドリング'}>ドリンク</option>
                             <option value={'映写'}>映写</option>
                             <option value={'コンセ'}>コンセ</option>
                             <option value={'ボックス'}>ボックス</option>

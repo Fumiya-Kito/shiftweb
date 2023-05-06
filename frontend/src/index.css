@@ -25,3 +25,15 @@ h3 {
 .isOpen {
   display: block;
 }
+
+.demo__btn {
+  font-size: 1.2rem;
+  display: block;
+  width: 300px;
+  margin: 0 auto;
+  text-align: center;
+  text-decoration: none;
+  /* background-color: white; */
+  border-radius: 20px;
+  clear: black;
+}

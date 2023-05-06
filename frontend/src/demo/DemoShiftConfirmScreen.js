@@ -59,33 +59,37 @@ function DemoShiftConfirmScreen({ history, match }) {
                 
                 <div>
                     <Row className='text-center my-4' >
-                        {month.map((week) => (
-                            <React.Fragment key={week}>
-                            {week.map((x) => (
-                                <Col key={x} className='my-1' xs={6} sm={6} md={4} lg={3} xl={2}>
-                                    
-                                    <Card style={{width: '11rem', height:'10rem'}}>
-                                        <Card.Header>
-                                            {x.getMonth() + 1} / {x.getDate()} ({ days[x.getDay()]})
-                                        </Card.Header>
-                                        <Card.Body>
-                                            {shift.shiftItems.map((item) => (
-                                                <div key={item._id}>
-                                                    {item.date === format(x, 'yyyy-MM-dd') &&
-                                                        <div>
-                                                            <Card.Title style={{color: '#0405B5'}}><b>出勤</b></Card.Title>
-                                                            <Card.Text>
-                                                                {item.start_time.substring(0, 5)}
-                                                                {' '}~{' '}
-                                                                {item.end_time.substring(0, 5)}
-                                                            </Card.Text>
+                        {month.map((week, i) => (
+                            <React.Fragment key={i}>
+                            {week.map((date, j) => (
+                                <React.Fragment key={j}>
+                                    {date.getMonth() === month[0][6].getMonth() &&
+                                        <Col key={j} className='my-1' xs={6} sm={6} md={4} lg={3} xl={2}>
+                                            
+                                            <Card style={{width: '11rem', height:'10rem'}}>
+                                                <Card.Header>
+                                                    {date.getMonth() + 1} / {date.getDate()} ({ days[date.getDay()]})
+                                                </Card.Header>
+                                                <Card.Body>
+                                                    {shift.shiftItems.map((item) => (
+                                                        <div key={item._id}>
+                                                            {item.date === format(date, 'yyyy-MM-dd') &&
+                                                                <div>
+                                                                    <Card.Title style={{color: '#0405B5'}}><b>出勤</b></Card.Title>
+                                                                    <Card.Text>
+                                                                        {item.start_time.substring(0, 5)}
+                                                                        {' '}~{' '}
+                                                                        {item.end_time.substring(0, 5)}
+                                                                    </Card.Text>
+                                                                </div>
+                                                            }
                                                         </div>
-                                                    }
-                                                </div>
-                                            ))}
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
+                                                    ))}
+                                                </Card.Body>
+                                            </Card>
+                                        </Col>
+                                    }
+                                </React.Fragment>
                             ))}
                         </React.Fragment>
                     ))}

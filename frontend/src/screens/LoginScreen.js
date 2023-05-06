@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Form, Button,Row, Col, Container } from 'react-bootstrap'
+import { Form, Button,Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { LinkContainer } from 'react-router-bootstrap'
 
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -25,15 +24,21 @@ function LoginScreen({history, location}) {
             history.push('/profile')
         }
     },[history, userInfo])
-
+    
     const submitHandler = (e) => {
         e.preventDefault()
         login(email, password, dispatch)
     }
-
+    
 
     return (
         <>
+            <FormContainer>
+                <Message variant='info'>
+                    <Link to={'/demo/profile'} className='demo__btn'>とりあえず触りたい方はこちら<br></br>DEMOユーザーでログイン</Link>
+                </Message>
+            </FormContainer>
+
             <FormContainer>
                 <h1>ログイン</h1>
                 
@@ -83,13 +88,6 @@ function LoginScreen({history, location}) {
 
             </FormContainer>
 
-            <FormContainer>
-                <Message variant='info'>
-                    デモはこちら（ユーザーの登録・ログインをせずに体験できます）
-                    <br></br>
-                    <Link to={'/demo/profile'}>Demoユーザーでログイン</Link>
-                </Message>
-            </FormContainer>
         </>
     )
 }
